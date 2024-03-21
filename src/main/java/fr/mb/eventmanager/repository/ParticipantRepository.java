@@ -1,12 +1,8 @@
 package fr.mb.eventmanager.repository;
 
-import fr.mb.eventmanager.repository.model.Event;
-import fr.mb.eventmanager.repository.model.Participant;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import fr.mb.eventmanager.model.Participant;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface ParticipantRepository extends CrudRepository<Participant, Integer> {
+public interface ParticipantRepository extends JpaRepository<Participant, Integer> {
 
 }

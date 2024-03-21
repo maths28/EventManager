@@ -1,13 +1,10 @@
 package fr.mb.eventmanager.controller;
 
-import fr.mb.eventmanager.controller.dto.EventResource;
-import fr.mb.eventmanager.controller.dto.EventCreateOrUpdateRequest;
-import fr.mb.eventmanager.controller.dto.ParticipantResource;
+import fr.mb.eventmanager.dto.event.EventResource;
+import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
+import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.EventNotFoundException;
-import fr.mb.eventmanager.exception.ParticipantNotFoundException;
 import fr.mb.eventmanager.service.IEventService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
