@@ -5,12 +5,14 @@ import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
 import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.EventNotFoundException;
 import fr.mb.eventmanager.service.IEventService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/events")
+@CrossOrigin("http://localhost:4200")
 public class EventController {
 
     private final IEventService eventService;
@@ -35,7 +37,7 @@ public class EventController {
     }
 
     @GetMapping
-    public List<EventResource> findAllFuturesEvents(@RequestParam(required = false) String location, @RequestParam int pageSize, @RequestParam int pageNumber){
+    public Page<EventResource> findAllFuturesEvents(@RequestParam(required = false) String location, @RequestParam int pageSize, @RequestParam int pageNumber){
         return eventService.findAllFutureEvents(location, pageSize, pageNumber);
     }
 

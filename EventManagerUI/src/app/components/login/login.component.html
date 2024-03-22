@@ -1,0 +1,18 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>User</mat-label>
+    <input matInput formControlName="username"/>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Mot de passe</mat-label>
+    <input matInput  formControlName="password"/>
+  </mat-form-field>
+
+  @if (isSubmitted && !isLogged){
+    <mat-error>Mauvais identifiants</mat-error>
+  }
+
+  <button mat-button type="submit" [disabled]="form.disabled">Connexion</button>
+</form>
+

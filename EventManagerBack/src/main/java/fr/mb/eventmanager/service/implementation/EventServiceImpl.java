@@ -9,6 +9,7 @@ import fr.mb.eventmanager.repository.EventRepository;
 import fr.mb.eventmanager.repository.ParticipantRepository;
 import fr.mb.eventmanager.service.IEventService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,10 +56,10 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<EventResource> findAllFutureEvents(String location, int pageSize, int pageNumber) {
+    public Page<EventResource> findAllFutureEvents(String location, int pageSize, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
-        return eventRepository.findAllFutureEvents(location, pageable).stream()
-                .map(event -> modelMapper.map(event, EventResource.class)).toList();
+        return eventRepository.findAllFutureEvents(location, pageable)
+                .map(event -> modelMapper.map(event, EventResource.class));
     }
 
     @Override

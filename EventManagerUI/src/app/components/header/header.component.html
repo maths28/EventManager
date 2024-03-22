@@ -1,0 +1,9 @@
+<mat-toolbar>
+  <span>EventManager</span>
+  <span class="space-toolbar"></span>
+  @if(isLogged){
+    <button mat-button routerLink="/logout">Déconnexion</button>
+  } @else {
+    <button mat-button routerLink="/login">Connexion</button>
+  }
+</mat-toolbar>
