@@ -21,6 +21,11 @@ public class EventController {
         this.eventService = eventService;
     }
 
+    @GetMapping("/{id}")
+    public EventResource getEvent(@PathVariable("id") int eventId) throws EventNotFoundException{
+        return this.eventService.getEvent(eventId);
+    }
+
     @PostMapping
     public EventResource createEvent(@RequestBody EventCreateOrUpdateRequest eventCreateRequest){
         return eventService.saveEvent(eventCreateRequest);

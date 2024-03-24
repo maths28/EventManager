@@ -1,0 +1,35 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label>Nom de l'evènement</mat-label>
+    <input matInput formControlName="name"/>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description"/>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Date de début</mat-label>
+    <input matInput formControlName="startDate"/>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Date de fin</mat-label>
+    <input matInput formControlName="endDate"/>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Lieu</mat-label>
+    <input matInput formControlName="location"/>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Capacité maximum</mat-label>
+    <input matInput formControlName="maxCapacity"/>
+  </mat-form-field>
+
+  <button mat-button type="submit">Enregistrer</button>
+</form>
+
+

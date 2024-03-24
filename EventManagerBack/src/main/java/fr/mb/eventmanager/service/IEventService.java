@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface IEventService {
 
+    EventResource getEvent(int eventId) throws EventNotFoundException;
+
     public EventResource saveEvent(EventCreateOrUpdateRequest eventSaveRequest);
 
     public EventResource updateEvent(int eventId, EventCreateOrUpdateRequest eventUpdateRequest) throws EventNotFoundException;

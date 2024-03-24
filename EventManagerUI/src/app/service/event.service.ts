@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {PageEvent} from "../model/event";
+import {PageEvent, Event} from "../model/event";
 
 @Injectable()
 export class EventService {
@@ -16,5 +16,9 @@ export class EventService {
         pageNumber: pageNumber
       }
     });
+  }
+
+  getEvent(eventId: number): Observable<Event> {
+    return this.httpClient.get<Event>(`${environment.BASE_URL}events/${eventId}`);
   }
 }

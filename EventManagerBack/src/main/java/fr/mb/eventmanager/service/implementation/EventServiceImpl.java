@@ -30,6 +30,12 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
+    public EventResource getEvent(int eventId) throws EventNotFoundException{
+        return this.eventRepository.findById(eventId).map((event -> modelMapper.map(event, EventResource.class)))
+                .orElseThrow(()->new EventNotFoundException(eventId));
+    }
+
+    @Override
     public EventResource saveEvent(EventCreateOrUpdateRequest eventSaveRequest) {
         Event event = this.eventRepository.save(modelMapper.map(eventSaveRequest, Event.class));
         return modelMapper.map(event, EventResource.class);
