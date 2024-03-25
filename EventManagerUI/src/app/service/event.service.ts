@@ -21,4 +21,12 @@ export class EventService {
   getEvent(eventId: number): Observable<Event> {
     return this.httpClient.get<Event>(`${environment.BASE_URL}events/${eventId}`);
   }
+
+  updateEvent(eventId: number, event: Event): Observable<Event>{
+    return this.httpClient.put<Event>(`${environment.BASE_URL}events/${eventId}`, event);
+  }
+
+  createEvent(event: Event): Observable<Event>{
+    return this.httpClient.post<Event>(`${environment.BASE_URL}events`, event);
+  }
 }

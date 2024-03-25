@@ -59,7 +59,7 @@
     <input matInput formControlName="maxCapacity"/>
   </mat-form-field>
 
-  <button mat-button type="submit">Enregistrer</button>
+  <button mat-button type="submit" [disabled]="form.invalid">Enregistrer</button>
 </form>
 
 
