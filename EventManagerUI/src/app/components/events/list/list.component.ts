@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from "../../../service/event.service";
 import {AsyncPipe, DatePipe} from "@angular/common";
-import {PageEvent} from "../../../model/event";
+import {Event, PageEvent} from "../../../model/event";
 import {MatTableModule} from "@angular/material/table";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {HeaderComponent} from "../../header/header.component";
@@ -10,6 +10,8 @@ import {MatCardModule} from "@angular/material/card";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatButton} from "@angular/material/button";
 import {RouterLink} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {DeleteEventComponent} from "../delete-event/delete-event.component";
 
 @Component({
   selector: 'app-list',
@@ -24,7 +26,8 @@ import {RouterLink} from "@angular/router";
     MatCardModule,
     MatProgressSpinner,
     MatButton,
-    RouterLink
+    RouterLink,
+    DeleteEventComponent
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
@@ -39,8 +42,10 @@ export class ListComponent implements OnInit{
   loading: boolean;
 
 
-  constructor(private eventService: EventService) {
-  }
+  constructor(
+    private eventService: EventService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.loadPage();
@@ -59,6 +64,16 @@ export class ListComponent implements OnInit{
         this.events = pageEvent;
         this.loading = false;
       })
+  }
+
+  deleteEvent(event: Event): void {
+    const dialogRef = this.dialog.open(DeleteEventComponent, {
+      data: event
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) this.eventService.deleteEvent(event.id).subscribe(()=> this.loadPage());
+    });
   }
 
 }
