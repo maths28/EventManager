@@ -12,6 +12,9 @@ import {MatButton} from "@angular/material/button";
 import {RouterLink} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteEventComponent} from "../delete-event/delete-event.component";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-list',
@@ -27,7 +30,11 @@ import {DeleteEventComponent} from "../delete-event/delete-event.component";
     MatProgressSpinner,
     MatButton,
     RouterLink,
-    DeleteEventComponent
+    DeleteEventComponent,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    FormsModule
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
@@ -40,6 +47,7 @@ export class ListComponent implements OnInit{
   pageIndex: number = 0;
   pageSize: number = 10;
   loading: boolean;
+  location: string;
 
 
   constructor(
@@ -59,7 +67,7 @@ export class ListComponent implements OnInit{
 
   loadPage(){
     this.loading = true;
-    this.eventService.getAllFutureEvents(this.pageSize, this.pageIndex+1)
+    this.eventService.getAllFutureEvents(this.pageSize, this.pageIndex+1, this.location)
       .subscribe((pageEvent) => {
         this.events = pageEvent;
         this.loading = false;

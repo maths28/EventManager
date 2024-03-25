@@ -1,5 +1,10 @@
 <h1>Liste des events</h1>
 
+<mat-form-field class="example-full-width">
+  <mat-label>Lieu</mat-label>
+  <input matInput [(ngModel)]="location" (keyup)="loadPage()">
+</mat-form-field>
+
 <div class="mat-elevation-z2">
 
   @if (!loading){

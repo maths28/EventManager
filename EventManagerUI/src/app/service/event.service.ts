@@ -9,12 +9,13 @@ export class EventService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllFutureEvents(pageSize: number, pageNumber: number): Observable<PageEvent> {
+  getAllFutureEvents(pageSize: number, pageNumber: number, location: string): Observable<PageEvent> {
+    let params: {pageSize: number, pageNumber: number, location?: string} = {pageSize: pageSize, pageNumber: pageNumber};
+    if(location){
+      params = {...params, location}
+    }
     return this.httpClient.get<PageEvent>(environment.BASE_URL + 'events', {
-      params: {
-        pageSize: pageSize,
-        pageNumber: pageNumber
-      }
+      params: params
     });
   }
 
