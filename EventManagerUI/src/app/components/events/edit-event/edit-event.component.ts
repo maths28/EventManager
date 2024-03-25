@@ -3,12 +3,15 @@ import {EventService} from "../../../service/event.service";
 import {ActivatedRoute} from "@angular/router";
 import {Event} from "../../../model/event";
 import {EventsFormComponent} from "../form/events-form.component";
+import {Observable} from "rxjs";
+import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-edit-event',
   standalone: true,
   imports: [
-    EventsFormComponent
+    EventsFormComponent,
+    AsyncPipe
   ],
   providers: [
     EventService
@@ -18,16 +21,13 @@ import {EventsFormComponent} from "../form/events-form.component";
 })
 export class EditEventComponent implements OnInit{
 
-  event: Event;
+  event$: Observable<Event>;
 
   constructor(private eventService: EventService, private activeRouter: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.eventService.getEvent(Number(this.activeRouter.snapshot.paramMap.get('id') || ''))
-      .subscribe((event: Event)=> {
-        this.event = event;
-      });
+    this.event$ = this.eventService.getEvent(Number(this.activeRouter.snapshot.paramMap.get('id') || ''));
   }
 
 

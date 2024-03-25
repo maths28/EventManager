@@ -1,0 +1,23 @@
+@if (event$ | async; as event){
+  <div id="details-event" xmlns="http://www.w3.org/1999/html">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>{{event.name}}</mat-card-title>
+        <mat-card-subtitle>
+          <p>
+            {{event.startDate | date:'dd/MM/yyyy HH:mm'}} - {{event.endDate | date: 'dd/MM/yyyy HH:mm'}}<br/>
+            {{event.location}}<br/>
+            {{event.maxCapacity}} personne{{event.maxCapacity > 1 ? 's': ''}} max.
+          </p>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{event.description}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button [routerLink]="['/events', event.id, 'edit']">Editer</button>
+        <button mat-button (click)="deleteEvent(event)">Supprimer</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+}

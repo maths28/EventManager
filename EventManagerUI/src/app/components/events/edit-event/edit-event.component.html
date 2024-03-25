@@ -1,3 +1,7 @@
-<h1>Edition de l'évènement {{event.id}}</h1>
+@if(event$ | async; as event){
+  <h1>Edition de l'évènement {{event.id}}</h1>
 
-<app-events-form [event]="event"/>
+  <app-events-form [event]="event"/>
+}
+
+

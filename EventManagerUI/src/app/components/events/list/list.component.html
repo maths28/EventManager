@@ -44,7 +44,8 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>  </th>
       <td mat-cell *matCellDef="let event">
-        <button mat-button [routerLink]="['/events', event.id]">Editer</button>
+        <button mat-button [routerLink]="['/events', event.id]">Détails</button>
+        <button mat-button [routerLink]="['/events', event.id, 'edit']">Editer</button>
         <button mat-button (click)="deleteEvent(event)">Supprimer</button>
       </td>
     </ng-container>
