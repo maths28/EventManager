@@ -1,0 +1,13 @@
+@if (errorMessage$ | async; as error){
+  <div id="error-component">
+    <mat-card class="mat-mdc-elevation-specific mat-elevation-z8">
+      <mat-card-header>
+        <mat-card-title>Erreur !</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{error.error}}</p>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button color="primary" (click)="onBack()">Retour</button>
+  </div>
+}

@@ -8,6 +8,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {EditEventComponent} from "./components/events/edit-event/edit-event.component";
 import {AddEventComponent} from "./components/events/add-event/add-event.component";
 import {DetailsEventComponent} from "./components/events/details-event/details-event.component";
+import {ErrorComponent} from "./components/error/error.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: "full"},
@@ -18,5 +19,6 @@ export const routes: Routes = [
   {path: 'participants', component: ParticipantListComponent},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
+  {path: 'error', component: ErrorComponent},
   {path: '**', redirectTo: ''}
 ];
