@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Event} from "../../../model/event";
 import {EventService} from "../../../service/event.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -38,16 +38,16 @@ import {MatDialog} from "@angular/material/dialog";
 export class DetailsEventComponent implements OnInit{
 
   event$: Observable<Event>;
+  @Input() id: number;
 
   constructor(
     private eventService: EventService,
-    private activeRouter: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.event$ = this.eventService.getEvent(Number(this.activeRouter.snapshot.paramMap.get('id') || ''));
+    this.event$ = this.eventService.getEvent(this.id);
   }
 
   deleteEvent(event: Event): void {

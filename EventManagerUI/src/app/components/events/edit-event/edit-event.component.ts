@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {EventService} from "../../../service/event.service";
 import {ActivatedRoute} from "@angular/router";
 import {Event} from "../../../model/event";
@@ -22,12 +22,13 @@ import {AsyncPipe} from "@angular/common";
 export class EditEventComponent implements OnInit{
 
   event$: Observable<Event>;
+  @Input() id: number;
 
-  constructor(private eventService: EventService, private activeRouter: ActivatedRoute) {
+  constructor(private eventService: EventService) {
   }
 
   ngOnInit(): void {
-    this.event$ = this.eventService.getEvent(Number(this.activeRouter.snapshot.paramMap.get('id') || ''));
+    this.event$ = this.eventService.getEvent(this.id);
   }
 
 
