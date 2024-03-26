@@ -14,8 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class EventServiceImpl implements IEventService {
 
@@ -69,10 +67,9 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<ParticipantResource> findAllParticipantsForEvent(int eventId) throws EventNotFoundException {
-        return eventRepository.findById(eventId)
-                .map(event -> event.getParticipants().stream()
-                    .map(participant -> modelMapper.map(participant, ParticipantResource.class)).toList())
-                .orElseThrow(()-> new EventNotFoundException(eventId));
+    public Page<ParticipantResource> findAllParticipantsForEvent(int eventId, int pageSize, int pageNumber) throws EventNotFoundException {
+        if(!this.eventRepository.existsById(eventId)) throw new EventNotFoundException(eventId);
+        return this.participantRepository.findAllByEventsId(eventId, PageRequest.of(pageNumber,pageSize))
+                .map(participant -> modelMapper.map(participant, ParticipantResource.class));
     }
 }

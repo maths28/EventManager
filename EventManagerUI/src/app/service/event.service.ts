@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {PageEvent, Event} from "../model/event";
+import {PageParticipant} from "../model/participant";
 
 @Injectable()
 export class EventService {
@@ -32,6 +33,13 @@ export class EventService {
   }
 
   deleteEvent(eventId: number): Observable<null>{
-    return this.httpClient.delete<null>(`${environment.BASE_URL}events/${eventId}`, );
+    return this.httpClient.delete<null>(`${environment.BASE_URL}events/${eventId}`);
+  }
+
+  getParticipants(eventId: number, pageSize: number, pageNumber: number): Observable<PageParticipant> {
+    return this.httpClient.get<PageParticipant>(`${environment.BASE_URL}events/${eventId}/participants`,
+      {
+        params: { pageSize: pageSize, pageNumber: pageNumber}
+      });
   }
 }

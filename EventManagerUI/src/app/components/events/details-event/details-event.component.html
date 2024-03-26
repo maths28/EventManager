@@ -1,6 +1,6 @@
 @if (event$ | async; as event){
-  <div id="details-event" xmlns="http://www.w3.org/1999/html">
-    <mat-card class="example-card">
+  <div id="details-event">
+    <mat-card class="mat-mdc-elevation-specific mat-elevation-z8">
       <mat-card-header>
         <mat-card-title>{{event.name}}</mat-card-title>
         <mat-card-subtitle>
@@ -21,3 +21,53 @@
     </mat-card>
   </div>
 }
+
+<div id="participants-event">
+  <div class="mat-headline-5">Liste des participants</div>
+
+  <div class="mat-elevation-z2">
+
+    @if (participants$ | async; as pageParticipant){
+
+      <table mat-table [dataSource]="pageParticipant.content">
+
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef> Nom </th>
+          <td mat-cell *matCellDef="let participant"> {{participant.firstName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef> Prénom </th>
+          <td mat-cell *matCellDef="let participant"> {{participant.lastName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let participant"> {{participant.email}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    } @else {
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Chargement des données en cours</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-spinner></mat-spinner>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   [length]="totalElements"
+                   (page)="onPaginatorChange($event)"
+    >
+    </mat-paginator>
+
+  </div>
+</div>

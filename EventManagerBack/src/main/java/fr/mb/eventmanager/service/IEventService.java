@@ -20,7 +20,7 @@ public interface IEventService {
 
     public Page<EventResource> findAllFutureEvents(String location, int pageSize, int pageNumber);
 
-    public List<ParticipantResource> findAllParticipantsForEvent(int eventId) throws EventNotFoundException;
+    public Page<ParticipantResource> findAllParticipantsForEvent(int eventId, int pageSize, int pageNumber) throws EventNotFoundException;
 
 
 }

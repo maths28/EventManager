@@ -1,4 +1,3 @@
-#details-event {
-  display: flex;
-  justify-content: center;
+#details-event, #participants-event {
+  padding: 1%;
 }

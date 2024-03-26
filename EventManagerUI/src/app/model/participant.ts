@@ -6,3 +6,8 @@ export class Participant{
   events: string;
 }
 
+export class PageParticipant {
+  content: Participant[];
+  totalElements: number;
+}
+
