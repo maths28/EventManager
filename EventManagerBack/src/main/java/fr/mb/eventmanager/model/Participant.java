@@ -2,6 +2,7 @@ package fr.mb.eventmanager.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Set;
 
@@ -16,6 +17,7 @@ public class Participant {
     private String lastName;
     private String email;
     @ManyToMany(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     private Set<Event> events;
 
     public void addEvent(Event event){
