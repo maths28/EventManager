@@ -67,10 +67,10 @@ export class EventsFormComponent implements OnInit {
 
       if(this.event.id){
         this.eventService.updateEvent(this.event.id, editedEvent)
-          .subscribe(()=> this.router.navigateByUrl('/events'));
+          .subscribe(()=> this.router.navigate(['/events', this.event.id]));
       }else {
         this.eventService.createEvent(editedEvent)
-          .subscribe(()=> this.router.navigateByUrl('/events'));
+          .subscribe((newEvent: Event)=> this.router.navigate(['/events', newEvent.id]));
       }
     }
 

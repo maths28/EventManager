@@ -15,6 +15,7 @@ import {DeleteEventComponent} from "../delete-event/delete-event.component";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import {Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-list',
@@ -42,12 +43,12 @@ import {FormsModule} from "@angular/forms";
 })
 export class ListComponent implements OnInit{
 
-  events : PageEvent;
+  events$ : Observable<PageEvent>;
   displayedColumns: string[] = ['name', 'description', 'startDate', 'endDate', 'location', 'maxCapacity', 'actions'];
   pageIndex: number = 0;
-  pageSize: number = 10;
-  loading: boolean;
+  pageSize: number = 5;
   location: string;
+  totalElements: number;
 
 
   constructor(
@@ -66,12 +67,10 @@ export class ListComponent implements OnInit{
   }
 
   loadPage(){
-    this.loading = true;
-    this.eventService.getAllFutureEvents(this.pageSize, this.pageIndex+1, this.location)
-      .subscribe((pageEvent) => {
-        this.events = pageEvent;
-        this.loading = false;
-      })
+    this.events$ = this.eventService.getAllFutureEvents(this.pageSize, this.pageIndex+1, this.location)
+      .pipe(
+        tap((eventPage)=> this.totalElements = eventPage.totalElements)
+      );
   }
 
   deleteEvent(event: Event): void {

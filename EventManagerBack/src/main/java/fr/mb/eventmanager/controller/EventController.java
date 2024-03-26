@@ -47,7 +47,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}/participants")
-    public List<ParticipantResource> findAllEventsForParticipant(@PathVariable("id") int eventId
+    public List<ParticipantResource> findAllParticipantsForEvent(@PathVariable("id") int eventId
     ) throws EventNotFoundException {
         return this.eventService.findAllParticipantsForEvent(eventId);
     }

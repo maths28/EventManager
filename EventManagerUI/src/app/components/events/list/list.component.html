@@ -7,9 +7,9 @@
 
 <div class="mat-elevation-z2">
 
-  @if (!loading){
+  @if (events$ | async; as eventPage){
 
-  <table mat-table [dataSource]="events.content">
+  <table mat-table [dataSource]="eventPage.content">
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Nom </th>
@@ -64,11 +64,11 @@
     </mat-card>
   }
 
-  <mat-paginator [pageSizeOptions]="[3, 5, 10, 20]"
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                  showFirstLastButtons
                  [pageIndex]="pageIndex"
                  [pageSize]="pageSize"
-                 [length]="events && events.totalElements"
+                 [length]="totalElements"
                  (page)="onPaginatorChange($event)"
   >
   </mat-paginator>

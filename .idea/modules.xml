@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/EventManagerUI.iml" filepath="$PROJECT_DIR$/EventManagerUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EventManagerUI/EventManagerUI.iml" filepath="$PROJECT_DIR$/EventManagerUI/EventManagerUI.iml" />
     </modules>
   </component>
 </project>
