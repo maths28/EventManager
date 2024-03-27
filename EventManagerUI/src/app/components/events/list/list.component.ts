@@ -16,6 +16,9 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {Observable, tap} from "rxjs";
+import {LoginService} from "../../../service/login.service";
+import {RegisterToEventComponent} from "../../participant/register-to-event/register-to-event.component";
+import {ParticipantService} from "../../../service/participant.service";
 
 @Component({
   selector: 'app-list',
@@ -44,19 +47,29 @@ import {Observable, tap} from "rxjs";
 export class ListComponent implements OnInit{
 
   events$ : Observable<PageEvent>;
-  displayedColumns: string[] = ['name', 'description', 'startDate', 'endDate', 'location', 'maxCapacity', 'actions'];
+  private commonDisplayedColumns: string[] = ['name', 'description', 'startDate', 'endDate', 'location', 'maxCapacity'];
+  displayedColumns: string[];
   pageIndex: number = 0;
   pageSize: number = 5;
   location: string;
   totalElements: number;
+  role: string;
 
 
   constructor(
     private eventService: EventService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private loginService: LoginService,
+    private participantService: ParticipantService
   ) {}
 
   ngOnInit() {
+    this.role = this.loginService.getUser()!.role;
+    if(this.role === "ORGA"){
+      this.displayedColumns = [...this.commonDisplayedColumns, 'actions'];
+    } else if (this.role === "PARTICIPANT") {
+      this.displayedColumns = [...this.commonDisplayedColumns, 'partActions'];
+    }
     this.loadPage();
   }
 
@@ -80,6 +93,16 @@ export class ListComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) this.eventService.deleteEvent(event.id).subscribe(()=> this.loadPage());
+    });
+  }
+
+  registerToEvent(event: Event): void {
+    const dialogRef = this.dialog.open(RegisterToEventComponent, {
+      data: event
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) this.participantService.registerParticipantToEvent(this.loginService.getUser()!, event).subscribe(()=> this.loadPage());
     });
   }
 
