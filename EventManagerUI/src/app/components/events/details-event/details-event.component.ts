@@ -93,7 +93,7 @@ export class DetailsEventComponent implements OnInit{
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) this.eventService.deleteEvent(event.id).subscribe(()=> this.router.navigateByUrl("/events"));
+      if(result) this.eventService.deleteEvent(event.id).subscribe(()=> this.router.navigateByUrl("/"));
     });
   }
 

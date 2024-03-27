@@ -1,0 +1,26 @@
+@if(submitted && (participant$ | async); as participant){
+  <p>Le particpant {{participant.firstName}} {{participant.lastName}} est créé !</p>
+  <p>Vous pouvez vous connecter</p>
+  <button mat-raised-button color="primary" routerLink="/login">Se connecter</button>
+} @else {
+  <h1>Nouveau participant</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input matInput  formControlName="firstName"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="lastName"/>
+    </mat-form-field>
+
+    <button mat-button type="submit" [disabled]="form.disabled || form.invalid">S'enregistrer</button>
+  </form>
+}
+
