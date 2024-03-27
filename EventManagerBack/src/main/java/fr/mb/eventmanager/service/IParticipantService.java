@@ -7,6 +7,7 @@ import fr.mb.eventmanager.exception.EventFullException;
 import fr.mb.eventmanager.exception.EventNotFoundException;
 import fr.mb.eventmanager.exception.ParticipantNotFoundException;
 import fr.mb.eventmanager.exception.UserNotRegisteredForEventException;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,5 +23,7 @@ public interface IParticipantService {
     ) throws ParticipantNotFoundException, UserNotRegisteredForEventException;
 
     public List<EventResource> findAllEventsForParticipant(int participantId) throws ParticipantNotFoundException;
+
+    public ParticipantResource findParticipantByEmail(String email);
 
 }

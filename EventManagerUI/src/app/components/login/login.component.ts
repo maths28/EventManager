@@ -31,10 +31,10 @@ export class LoginComponent implements OnInit{
 
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void>{
       this.isSubmitted = false;
       this.form.disable();
-      this.isLogged = this.loginService.login(this.form.value.username, this.form.value.password);
+      this.isLogged = await this.loginService.login(this.form.value.username, this.form.value.password);
       this.isSubmitted = true;
       if(!this.isLogged){
         this.form.enable();

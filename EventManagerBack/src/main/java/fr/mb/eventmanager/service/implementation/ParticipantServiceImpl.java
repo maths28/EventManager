@@ -68,4 +68,10 @@ public class ParticipantServiceImpl implements IParticipantService {
                 ).toList()
         ).orElseThrow(()->new ParticipantNotFoundException(participantId));
     }
+
+    @Override
+    public ParticipantResource findParticipantByEmail(String email) {
+        return this.participantRepository.findByEmail(email).map((participant -> modelMapper.map(participant, ParticipantResource.class)))
+                .orElse(null);
+    }
 }

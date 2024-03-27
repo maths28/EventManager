@@ -23,6 +23,11 @@ public class ParticipantController {
         this.participantService = participantService;
     }
 
+    @GetMapping("/search")
+    public ParticipantResource findParticipantByEmail(@RequestParam String email){
+        return this.participantService.findParticipantByEmail(email);
+    }
+
     @PostMapping
     public ParticipantResource createParticipant(@RequestBody ParticipantCreateRequest participantCreateRequest){
         return participantService.createParticipant(participantCreateRequest);
