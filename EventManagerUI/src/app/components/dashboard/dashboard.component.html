@@ -1,1 +1,5 @@
-<app-list/>
+<app-list [typeList]="EventListType.ALL_EVENTS"/>
+
+@if (role === "PARTICIPANT"){
+  <app-list [typeList]="EventListType.REGISTERED_EVENTS"/>
+}

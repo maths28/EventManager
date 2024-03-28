@@ -4,7 +4,7 @@ import {Participant} from "../model/participant";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {User} from "../model/user";
-import {Event} from "../model/event";
+import {Event, PageEvent} from "../model/event";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,15 @@ export class ParticipantService {
 
   registerParticipantToEvent(participant: User, event: Event): Observable<Event[]>{
     return this.httpClient.post<Event[]>(`${environment.BASE_URL}participants/${participant.userId}/events/${event.id}`, null);
+  }
+
+  getEvents(participant: User, pageSize: number, pageNumber: number): Observable<PageEvent>{
+    return this.httpClient.get<PageEvent>(`${environment.BASE_URL}participants/${participant.userId}/events`, {
+      params: {
+        pageSize: pageSize,
+        pageNumber: pageNumber
+      }
+    });
   }
 
 

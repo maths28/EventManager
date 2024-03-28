@@ -7,7 +7,7 @@ import fr.mb.eventmanager.exception.EventFullException;
 import fr.mb.eventmanager.exception.EventNotFoundException;
 import fr.mb.eventmanager.exception.ParticipantNotFoundException;
 import fr.mb.eventmanager.exception.UserNotRegisteredForEventException;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface IParticipantService {
                                                             int eventId
     ) throws ParticipantNotFoundException, UserNotRegisteredForEventException;
 
-    public List<EventResource> findAllEventsForParticipant(int participantId) throws ParticipantNotFoundException;
+    public Page<EventResource> findAllEventsForParticipant(int participantId, int pageSize, int pageNumber) throws ParticipantNotFoundException;
 
     public ParticipantResource findParticipantByEmail(String email);
 

@@ -13,6 +13,8 @@ import fr.mb.eventmanager.model.Event;
 import fr.mb.eventmanager.model.Participant;
 import fr.mb.eventmanager.service.IParticipantService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,12 +63,11 @@ public class ParticipantServiceImpl implements IParticipantService {
     }
 
     @Override
-    public List<EventResource> findAllEventsForParticipant(int participantId) throws ParticipantNotFoundException {
-        return participantRepository.findById(participantId).map(
-                participant -> participant.getEvents().stream().map(
-                        eventOfParticipant -> modelMapper.map(eventOfParticipant, EventResource.class)
-                ).toList()
-        ).orElseThrow(()->new ParticipantNotFoundException(participantId));
+    public Page<EventResource> findAllEventsForParticipant(int participantId, int pageSize, int pageNumber) throws ParticipantNotFoundException {
+        if(!participantRepository.existsById(participantId)) throw new ParticipantNotFoundException(participantId);
+        return eventRepository.findAllByParticipantsId(participantId, PageRequest.of(pageNumber, pageSize)).map(
+                eventOfParticipant -> modelMapper.map(eventOfParticipant, EventResource.class)
+        );
     }
 
     @Override

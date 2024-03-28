@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ListComponent} from "../events/list/list.component";
+import {EventListType} from "../enum/EventListType";
+import {LoginService} from "../../service/login.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +12,14 @@ import {ListComponent} from "../events/list/list.component";
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
+  protected readonly EventListType = EventListType;
+  role: string;
+  constructor(private loginService: LoginService) {
+  }
+
+  ngOnInit(): void {
+    this.role = this.loginService.getUser()!.role;
+  }
 
 }

@@ -42,8 +42,12 @@ public class EventController {
     }
 
     @GetMapping
-    public Page<EventResource> findAllFuturesEvents(@RequestParam(required = false) String location, @RequestParam int pageSize, @RequestParam int pageNumber){
-        return eventService.findAllFutureEvents(location, pageSize, pageNumber);
+    public Page<EventResource> findAllFuturesEvents(
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Integer excludeParticipantId,
+            @RequestParam int pageSize,
+            @RequestParam int pageNumber){
+        return eventService.findAllFutureEvents(location, excludeParticipantId, pageSize, pageNumber);
     }
 
     @GetMapping("/{id}/participants")

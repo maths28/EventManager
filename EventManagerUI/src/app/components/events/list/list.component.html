@@ -1,9 +1,13 @@
-<h1>Liste des events</h1>
+@if(typeList === EventListType.ALL_EVENTS){
+  <h1>Liste des events</h1>
 
-<mat-form-field class="example-full-width">
-  <mat-label>Lieu</mat-label>
-  <input matInput [(ngModel)]="location" (keyup)="loadPage()">
-</mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Lieu</mat-label>
+    <input matInput [(ngModel)]="location" (keyup)="loadPage()">
+  </mat-form-field>
+} @else {
+  <h1>Vos inscriptions</h1>
+}
 
 <div class="mat-elevation-z2">
 
@@ -53,7 +57,11 @@
     <ng-container matColumnDef="partActions">
       <th mat-header-cell *matHeaderCellDef>  </th>
       <td mat-cell *matCellDef="let event">
-        <button mat-button (click)="registerToEvent(event)">S'inscrire</button>
+        @if (typeList === EventListType.ALL_EVENTS){
+          <button mat-button (click)="registerToEvent(event)">S'inscrire</button>
+        } @else {
+          <button mat-button (click)="registerToEvent(event)">Se désinscrire</button>
+        }
       </td>
     </ng-container>
 

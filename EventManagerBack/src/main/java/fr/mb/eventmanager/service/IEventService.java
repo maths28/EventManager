@@ -18,7 +18,8 @@ public interface IEventService {
 
     public void deleteEvent(int eventId) throws EventNotFoundException;
 
-    public Page<EventResource> findAllFutureEvents(String location, int pageSize, int pageNumber);
+    public Page<EventResource> findAllFutureEvents(
+            String location, Integer excludeParticipantId, int pageSize, int pageNumber);
 
     public Page<ParticipantResource> findAllParticipantsForEvent(int eventId, int pageSize, int pageNumber) throws EventNotFoundException;
 

@@ -1,5 +1,4 @@
 import {Routes} from '@angular/router';
-import {ParticipantListComponent} from "./participants/list/participant-list.component";
 import {LoginComponent} from "./components/login/login.component";
 import {LogoutComponent} from "./components/logout/logout.component";
 import {authGuardGuard} from "./guard/auth-guard.guard";
@@ -15,7 +14,6 @@ export const routes: Routes = [
   {path: 'events/new', component: AddEventComponent, canActivate: [authGuardGuard]},
   {path: 'events/:id/edit', component: EditEventComponent, canActivate: [authGuardGuard]},
   {path: 'events/:id', component: DetailsEventComponent, canActivate: [authGuardGuard]},
-  {path: 'participants', component: ParticipantListComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'logout', component: LogoutComponent},

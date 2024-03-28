@@ -8,6 +8,7 @@ import fr.mb.eventmanager.exception.EventNotFoundException;
 import fr.mb.eventmanager.exception.ParticipantNotFoundException;
 import fr.mb.eventmanager.exception.UserNotRegisteredForEventException;
 import fr.mb.eventmanager.service.IParticipantService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,9 +41,12 @@ public class ParticipantController {
     }
 
     @GetMapping("/{id}/events")
-    public List<EventResource> findAllEventsForParticipant(@PathVariable("id") int participantId
+    public Page<EventResource> findAllEventsForParticipant(
+            @PathVariable("id") int participantId,
+            @RequestParam int pageSize,
+            @RequestParam int pageNumber
     ) throws ParticipantNotFoundException {
-        return this.participantService.findAllEventsForParticipant(participantId);
+        return this.participantService.findAllEventsForParticipant(participantId, pageSize, pageNumber);
     }
 
     @DeleteMapping("/{participantId}/events/{eventId}")

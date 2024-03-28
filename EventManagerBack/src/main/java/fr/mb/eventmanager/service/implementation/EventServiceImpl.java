@@ -60,9 +60,14 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public Page<EventResource> findAllFutureEvents(String location, int pageSize, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
-        return eventRepository.findAllFutureEvents(location, pageable)
+    public Page<EventResource> findAllFutureEvents(
+            String location,
+            Integer excludeParticipantId,
+            int pageSize,
+            int pageNumber
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return eventRepository.findAllFutureEvents(location, excludeParticipantId, pageable)
                 .map(event -> modelMapper.map(event, EventResource.class));
     }
 

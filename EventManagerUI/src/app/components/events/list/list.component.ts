@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {EventService} from "../../../service/event.service";
 import {AsyncPipe, DatePipe} from "@angular/common";
 import {Event, PageEvent} from "../../../model/event";
@@ -19,6 +19,7 @@ import {Observable, tap} from "rxjs";
 import {LoginService} from "../../../service/login.service";
 import {RegisterToEventComponent} from "../../participant/register-to-event/register-to-event.component";
 import {ParticipantService} from "../../../service/participant.service";
+import {EventListType} from "../../enum/EventListType";
 
 @Component({
   selector: 'app-list',
@@ -41,8 +42,7 @@ import {ParticipantService} from "../../../service/participant.service";
     FormsModule
   ],
   templateUrl: './list.component.html',
-  styleUrl: './list.component.css',
-  providers: [EventService]
+  styleUrl: './list.component.css'
 })
 export class ListComponent implements OnInit{
 
@@ -54,6 +54,7 @@ export class ListComponent implements OnInit{
   location: string;
   totalElements: number;
   role: string;
+  @Input() typeList: EventListType;
 
 
   constructor(
@@ -69,6 +70,8 @@ export class ListComponent implements OnInit{
       this.displayedColumns = [...this.commonDisplayedColumns, 'actions'];
     } else if (this.role === "PARTICIPANT") {
       this.displayedColumns = [...this.commonDisplayedColumns, 'partActions'];
+      this.eventService.initNotifyInscriptions();
+      this.eventService.updatedInscriptions$.subscribe(()=>this.loadPage());
     }
     this.loadPage();
   }
@@ -80,10 +83,15 @@ export class ListComponent implements OnInit{
   }
 
   loadPage(){
-    this.events$ = this.eventService.getAllFutureEvents(this.pageSize, this.pageIndex+1, this.location)
-      .pipe(
-        tap((eventPage)=> this.totalElements = eventPage.totalElements)
-      );
+    let events$: Observable<PageEvent>;
+    if(this.typeList === EventListType.ALL_EVENTS) {
+      const excludeParticipantId = this.role === "ORGA" ? undefined : this.loginService.getUser()!.userId
+      events$ = this.eventService.getAllFutureEvents(this.pageSize, this.pageIndex, this.location, excludeParticipantId);
+    } else {
+      events$ = this.participantService.getEvents(this.loginService.getUser()!, this.pageSize, this.pageIndex)
+    }
+
+    this.events$ = events$.pipe(tap((eventPage)=> this.totalElements = eventPage.totalElements));
   }
 
   deleteEvent(event: Event): void {
@@ -102,8 +110,10 @@ export class ListComponent implements OnInit{
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) this.participantService.registerParticipantToEvent(this.loginService.getUser()!, event).subscribe(()=> this.loadPage());
+      if(result) this.participantService.registerParticipantToEvent(this.loginService.getUser()!, event)
+        .subscribe(()=> this.eventService.applyNotifyInscriptions());
     });
   }
 
+  protected readonly EventListType = EventListType;
 }
