@@ -20,6 +20,7 @@ import {LoginService} from "../../../service/login.service";
 import {RegisterToEventComponent} from "../../participant/register-to-event/register-to-event.component";
 import {ParticipantService} from "../../../service/participant.service";
 import {EventListType} from "../../enum/EventListType";
+import {UnregisterToEventComponent} from "../../participant/unregister-to-event/unregister-to-event.component";
 
 @Component({
   selector: 'app-list',
@@ -111,6 +112,17 @@ export class ListComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) this.participantService.registerParticipantToEvent(this.loginService.getUser()!, event)
+        .subscribe(()=> this.eventService.applyNotifyInscriptions());
+    });
+  }
+
+  unregisterToEvent(event: Event): void {
+    const dialogRef = this.dialog.open(UnregisterToEventComponent, {
+      data: event
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) this.participantService.unregisterParticipantToEvent(this.loginService.getUser()!, event)
         .subscribe(()=> this.eventService.applyNotifyInscriptions());
     });
   }

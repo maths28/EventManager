@@ -20,6 +20,10 @@ export class ParticipantService {
     return this.httpClient.post<Event[]>(`${environment.BASE_URL}participants/${participant.userId}/events/${event.id}`, null);
   }
 
+  unregisterParticipantToEvent(participant: User, event: Event): Observable<null>{
+    return this.httpClient.delete<null>(`${environment.BASE_URL}participants/${participant.userId}/events/${event.id}`);
+  }
+
   getEvents(participant: User, pageSize: number, pageNumber: number): Observable<PageEvent>{
     return this.httpClient.get<PageEvent>(`${environment.BASE_URL}participants/${participant.userId}/events`, {
       params: {

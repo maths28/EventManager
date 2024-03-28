@@ -60,7 +60,7 @@
         @if (typeList === EventListType.ALL_EVENTS){
           <button mat-button (click)="registerToEvent(event)">S'inscrire</button>
         } @else {
-          <button mat-button (click)="registerToEvent(event)">Se désinscrire</button>
+          <button mat-button (click)="unregisterToEvent(event)">Se désinscrire</button>
         }
       </td>
     </ng-container>
