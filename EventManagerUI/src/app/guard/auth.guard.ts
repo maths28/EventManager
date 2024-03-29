@@ -3,7 +3,7 @@ import {LoginService} from "../service/login.service";
 import {inject} from "@angular/core";
 import {ErrorService} from "../service/error.service";
 
-export const authGuardGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state) => {
   const loginService: LoginService = inject(LoginService);
   const router : Router = inject(Router);
   const errorService: ErrorService = inject(ErrorService);
