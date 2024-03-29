@@ -9,6 +9,7 @@ import {ErrorComponent} from "./components/error/error.component";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {RegisterComponent} from "./components/register/register.component";
 import {alreadyLoggedGuard} from "./guard/already-logged.guard";
+import {showErrorGuard} from "./guard/show-error.guard";
 
 export const routes: Routes = [
   {path: '', component: DashboardComponent, pathMatch: "full", canActivate: [authGuard]},
@@ -18,6 +19,6 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [alreadyLoggedGuard]},
   {path: 'register', component: RegisterComponent, canActivate: [alreadyLoggedGuard]},
   {path: 'logout', component: LogoutComponent},
-  {path: 'error', component: ErrorComponent},
+  {path: 'error', component: ErrorComponent, canActivate: [showErrorGuard]},
   {path: '**', redirectTo: ''}
 ];
