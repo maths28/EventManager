@@ -8,13 +8,12 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class ErrorService {
 
-  private errorSource: BehaviorSubject<HttpErrorResponse | null> = new BehaviorSubject<HttpErrorResponse | null>(null);
-  error$: Observable<HttpErrorResponse|null> = this.errorSource.asObservable();
+  public errorMessage: string;
 
   constructor(private router: Router) { }
 
   handleError(error: HttpErrorResponse){
-    this.errorSource.next(error);
+    this.errorMessage = error.error;
     this.router.navigateByUrl("/error");
   }
 }

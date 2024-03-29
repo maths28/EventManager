@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ErrorService} from "../../service/error.service";
 import {Observable} from "rxjs";
 import {AsyncPipe, DatePipe} from "@angular/common";
@@ -30,16 +30,16 @@ import {HttpErrorResponse} from "@angular/common/http";
   templateUrl: './error.component.html',
   styleUrl: './error.component.css'
 })
-export class ErrorComponent {
+export class ErrorComponent implements OnInit{
 
-  errorMessage$: Observable<HttpErrorResponse|null>;
+  errorMessage: string;
 
   constructor(
     private errorService: ErrorService
   ) {}
 
   ngOnInit() {
-    this.errorMessage$ = this.errorService.error$;
+    this.errorMessage = this.errorService.errorMessage;
   }
 
   onBack(){
