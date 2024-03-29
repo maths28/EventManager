@@ -14,7 +14,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
-import {Observable, tap} from "rxjs";
+import {debounceTime, distinctUntilChanged, Observable, Subject, tap} from "rxjs";
 import {LoginService} from "../../../service/login.service";
 import {ParticipantService} from "../../../service/participant.service";
 import {EventListType} from "../../../enum/EventListType";
@@ -51,7 +51,8 @@ export class ListEventComponent implements OnInit{
   displayedColumns: string[];
   pageIndex: number = 0;
   pageSize: number = 5;
-  location: string;
+  location: string = "";
+  private locationSearchTerms: Subject<string> = new Subject<string>();
   totalElements: number;
   role: string;
   @Input() typeList: EventListType;
@@ -73,6 +74,17 @@ export class ListEventComponent implements OnInit{
     }
     this.eventService.initNeedToUpdateEventList();
     this.eventService.needToUpdateEventList$.subscribe(()=>this.loadPage());
+    if(this.typeList == EventListType.ALL_EVENTS){
+      this.locationSearchTerms.pipe(
+        // {...."ab"..."abz"."ab"...."abc"......}
+        debounceTime(300),
+        // {......"ab"...."ab"...."abc"......}
+        distinctUntilChanged(),
+      ).subscribe((location) => {
+        this.location = location;
+        this.loadPage();
+      });
+    }
     this.loadPage();
   }
 
@@ -92,6 +104,10 @@ export class ListEventComponent implements OnInit{
     }
 
     this.events$ = events$.pipe(tap((eventPage)=> this.totalElements = eventPage.totalElements));
+  }
+
+  searchByLocation(location: string){
+    this.locationSearchTerms.next(location);
   }
 
   deleteEvent(event: Event): void {

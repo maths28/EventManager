@@ -3,7 +3,7 @@
 
   <mat-form-field class="example-full-width">
     <mat-label>Lieu</mat-label>
-    <input matInput [(ngModel)]="location" (keyup)="loadPage()">
+    <input #searchInput matInput (keyup)="searchByLocation(searchInput.value)" [value]="location">
   </mat-form-field>
 } @else {
   <h1>Vos inscriptions</h1>
