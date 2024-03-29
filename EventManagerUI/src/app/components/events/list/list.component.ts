@@ -11,16 +11,16 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatButton} from "@angular/material/button";
 import {RouterLink} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {DeleteEventComponent} from "../delete-event/delete-event.component";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {Observable, tap} from "rxjs";
 import {LoginService} from "../../../service/login.service";
-import {RegisterToEventComponent} from "../../participant/register-to-event/register-to-event.component";
 import {ParticipantService} from "../../../service/participant.service";
 import {EventListType} from "../../enum/EventListType";
-import {UnregisterToEventComponent} from "../../participant/unregister-to-event/unregister-to-event.component";
+import {ActionForEventDialogData} from "../../dialog/action-for-event-dialog/ActionForEventDialogData";
+import {ActionForEventType} from "../../enum/ActionForEventType";
+import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialog/action-for-event-dialog.component";
 
 @Component({
   selector: 'app-list',
@@ -36,7 +36,6 @@ import {UnregisterToEventComponent} from "../../participant/unregister-to-event/
     MatProgressSpinner,
     MatButton,
     RouterLink,
-    DeleteEventComponent,
     MatFormField,
     MatInput,
     MatLabel,
@@ -71,9 +70,9 @@ export class ListComponent implements OnInit{
       this.displayedColumns = [...this.commonDisplayedColumns, 'actions'];
     } else if (this.role === "PARTICIPANT") {
       this.displayedColumns = [...this.commonDisplayedColumns, 'partActions'];
-      this.eventService.initNotifyInscriptions();
-      this.eventService.updatedInscriptions$.subscribe(()=>this.loadPage());
     }
+    this.eventService.initNeedToUpdateEventList();
+    this.eventService.needToUpdateEventList$.subscribe(()=>this.loadPage());
     this.loadPage();
   }
 
@@ -96,34 +95,26 @@ export class ListComponent implements OnInit{
   }
 
   deleteEvent(event: Event): void {
-    const dialogRef = this.dialog.open(DeleteEventComponent, {
-      data: event
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) this.eventService.deleteEvent(event.id).subscribe(()=> this.loadPage());
+    let dialogData : ActionForEventDialogData =
+      new ActionForEventDialogData(ActionForEventType.DELETE_EVENT, event);
+    this.dialog.open(ActionForEventDialogComponent, {
+      data: dialogData
     });
   }
 
   registerToEvent(event: Event): void {
-    const dialogRef = this.dialog.open(RegisterToEventComponent, {
-      data: event
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) this.participantService.registerParticipantToEvent(this.loginService.getUser()!, event)
-        .subscribe(()=> this.eventService.applyNotifyInscriptions());
+    let dialogData : ActionForEventDialogData =
+      new ActionForEventDialogData(ActionForEventType.REGISTER_TO_EVENT, event, this.loginService.getUser()!);
+    this.dialog.open(ActionForEventDialogComponent, {
+      data: dialogData
     });
   }
 
   unregisterToEvent(event: Event): void {
-    const dialogRef = this.dialog.open(UnregisterToEventComponent, {
-      data: event
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) this.participantService.unregisterParticipantToEvent(this.loginService.getUser()!, event)
-        .subscribe(()=> this.eventService.applyNotifyInscriptions());
+    let dialogData : ActionForEventDialogData =
+      new ActionForEventDialogData(ActionForEventType.UNREGISTER_TO_EVENT, event, this.loginService.getUser()!);
+    this.dialog.open(ActionForEventDialogComponent, {
+      data: dialogData
     });
   }
 

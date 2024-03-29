@@ -10,19 +10,19 @@ import {PageParticipant} from "../model/participant";
 })
 export class EventService {
 
-  private updatedInscriptions: Subject<boolean> = new Subject<boolean>();
-  updatedInscriptions$: Observable<boolean>;
+  private needToUpdateEventList: Subject<boolean> = new Subject<boolean>();
+  needToUpdateEventList$: Observable<boolean>;
 
   constructor(private httpClient: HttpClient) { }
 
-  initNotifyInscriptions(): void {
-    if(!this.updatedInscriptions$){
-      this.updatedInscriptions$ = this.updatedInscriptions.asObservable();
+  initNeedToUpdateEventList(): void {
+    if(!this.needToUpdateEventList$){
+      this.needToUpdateEventList$ = this.needToUpdateEventList.asObservable();
     }
   }
 
-  applyNotifyInscriptions(): void{
-    this.updatedInscriptions.next(true);
+  applyNeedToUpdateList(): void{
+    this.needToUpdateEventList.next(true);
   }
 
   getAllFutureEvents(

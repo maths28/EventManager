@@ -12,13 +12,13 @@ import {
   MatCardTitle
 } from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
-import {DeleteEventComponent} from "../delete-event/delete-event.component";
 import {MatDialog} from "@angular/material/dialog";
 import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
   MatRow,
@@ -29,6 +29,9 @@ import {MatPaginator, PageEvent as PaginatorEvent} from "@angular/material/pagin
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {PageParticipant} from "../../../model/participant";
 import {Router, RouterLink} from "@angular/router";
+import {ActionForEventDialogData} from "../../dialog/action-for-event-dialog/ActionForEventDialogData";
+import {ActionForEventType} from "../../enum/ActionForEventType";
+import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialog/action-for-event-dialog.component";
 
 @Component({
   selector: 'app-details-event',
@@ -88,12 +91,12 @@ export class DetailsEventComponent implements OnInit{
   }
 
   deleteEvent(event: Event): void {
-    const dialogRef = this.dialog.open(DeleteEventComponent, {
-      data: event
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) this.eventService.deleteEvent(event.id).subscribe(()=> this.router.navigateByUrl("/"));
+    let dialogData : ActionForEventDialogData =
+      new ActionForEventDialogData(
+        ActionForEventType.DELETE_EVENT, event, ()=> this.router.navigateByUrl("/")
+      );
+    this.dialog.open(ActionForEventDialogComponent, {
+      data: dialogData
     });
   }
 
