@@ -1,5 +1,6 @@
 <app-list [typeList]="EventListType.ALL_EVENTS"/>
 
 @if (role === "PARTICIPANT"){
+  <mat-divider></mat-divider>
   <app-list [typeList]="EventListType.REGISTERED_EVENTS"/>
 }

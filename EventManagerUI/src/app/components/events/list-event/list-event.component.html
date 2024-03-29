@@ -1,94 +1,115 @@
-@if(typeList === EventListType.ALL_EVENTS){
-  <h1>Liste des events</h1>
-
-  <mat-form-field class="example-full-width">
-    <mat-label>Lieu</mat-label>
-    <input #searchInput matInput (keyup)="searchByLocation(searchInput.value)" [value]="location">
-  </mat-form-field>
-} @else {
-  <h1>Vos inscriptions</h1>
-}
-
-<div class="mat-elevation-z2">
-
-  @if (events$ | async; as eventPage){
-
-  <table mat-table [dataSource]="eventPage.content">
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nom </th>
-      <td mat-cell *matCellDef="let event"> {{event.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let event"> {{event.description}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="startDate">
-      <th mat-header-cell *matHeaderCellDef> Date de début </th>
-      <td mat-cell *matCellDef="let event"> {{event.startDate | date:'dd/MM/yyyy HH:mm'}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="endDate">
-      <th mat-header-cell *matHeaderCellDef> Date de fin </th>
-      <td mat-cell *matCellDef="let event"> {{event.endDate | date:'dd/MM/yyyy HH:mm'}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="location">
-      <th mat-header-cell *matHeaderCellDef> Lieu </th>
-      <td mat-cell *matCellDef="let event"> {{event.location}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="maxCapacity">
-      <th mat-header-cell *matHeaderCellDef> Capacité maximale </th>
-      <td mat-cell *matCellDef="let event"> {{event.maxCapacity}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>  </th>
-      <td mat-cell *matCellDef="let event">
-        <button mat-button [routerLink]="['/events', event.id]">Détails</button>
-        <button mat-button [routerLink]="['/events', event.id, 'edit']">Editer</button>
-        <button mat-button (click)="deleteEvent(event)">Supprimer</button>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="partActions">
-      <th mat-header-cell *matHeaderCellDef>  </th>
-      <td mat-cell *matCellDef="let event">
-        @if (typeList === EventListType.ALL_EVENTS){
-          <button mat-button (click)="registerToEvent(event)">S'inscrire</button>
-        } @else {
-          <button mat-button (click)="unregisterToEvent(event)">Se désinscrire</button>
+<div id="list-event">
+  @if(typeList === EventListType.ALL_EVENTS){
+    <h1>Liste des events</h1>
+    <mat-toolbar>
+      <b>Filtre</b>
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Lieu</mat-label>
+        <input #searchInput matInput (keyup)="searchByLocation(searchInput.value)">
+        @if (searchInput.value){
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearchByLocation(searchInput)">
+            <mat-icon>close</mat-icon>
+          </button>
         }
-      </td>
-    </ng-container>
+      </mat-form-field>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let bla; columns: displayedColumns;"></tr>
-  </table>
+      @if(role==='ORGA'){
+        <span id="toolbar-spacer"></span>
+        <button mat-mini-fab routerLink="/events/new">
+          <mat-icon>add</mat-icon>
+        </button>
+      }
+
+    </mat-toolbar>
+
   } @else {
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Chargemenr des données en cours</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-spinner></mat-spinner>
-      </mat-card-content>
-    </mat-card>
+    <h1>Vos inscriptions</h1>
   }
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 [pageIndex]="pageIndex"
-                 [pageSize]="pageSize"
-                 [length]="totalElements"
-                 (page)="onPaginatorChange($event)"
-  >
-  </mat-paginator>
+  <div class="mat-elevation-z2">
 
+    @if (events$ | async; as eventPage){
+
+    <table mat-table [dataSource]="eventPage.content">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nom </th>
+        <td mat-cell *matCellDef="let event"> {{event.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let event"> {{event.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef> Date de début </th>
+        <td mat-cell *matCellDef="let event"> {{event.startDate | date:'dd/MM/yyyy HH:mm'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef> Date de fin </th>
+        <td mat-cell *matCellDef="let event"> {{event.endDate | date:'dd/MM/yyyy HH:mm'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef> Lieu </th>
+        <td mat-cell *matCellDef="let event"> {{event.location}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="maxCapacity">
+        <th mat-header-cell *matHeaderCellDef> Capacité maximale </th>
+        <td mat-cell *matCellDef="let event"> {{event.maxCapacity}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let event">
+          <button mat-icon-button [routerLink]="['/events', event.id]">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button [routerLink]="['/events', event.id, 'edit']">
+            <mat-icon>edit_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteEvent(event)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="partActions">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let event">
+          @if (typeList === EventListType.ALL_EVENTS){
+            <button mat-button (click)="registerToEvent(event)">S'inscrire</button>
+          } @else {
+            <button mat-button (click)="unregisterToEvent(event)">Se désinscrire</button>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let bla; columns: displayedColumns;"></tr>
+    </table>
+    } @else {
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Chargemenr des données en cours</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-spinner></mat-spinner>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   [length]="totalElements"
+                   (page)="onPaginatorChange($event)"
+    >
+    </mat-paginator>
+
+  </div>
 </div>
-@if(role==='ORGA'){
-  <button mat-raised-button routerLink="/events/new" color="primary">Ajouter un évènement</button>
-}
