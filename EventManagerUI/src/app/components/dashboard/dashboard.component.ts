@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ListComponent} from "../events/list/list.component";
+import {ListEventComponent} from "../events/list-event/list-event.component";
 import {EventListType} from "../enum/EventListType";
 import {LoginService} from "../../service/login.service";
 
@@ -7,7 +7,7 @@ import {LoginService} from "../../service/login.service";
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    ListComponent
+    ListEventComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

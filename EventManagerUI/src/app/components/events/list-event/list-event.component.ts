@@ -41,10 +41,10 @@ import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialo
     MatLabel,
     FormsModule
   ],
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.css'
+  templateUrl: './list-event.component.html',
+  styleUrl: './list-event.component.css'
 })
-export class ListComponent implements OnInit{
+export class ListEventComponent implements OnInit{
 
   events$ : Observable<PageEvent>;
   private commonDisplayedColumns: string[] = ['name', 'description', 'startDate', 'endDate', 'location', 'maxCapacity'];

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Event} from "../../../model/event";
-import {EventsFormComponent} from "../form/events-form.component";
+import {EventsFormComponent} from "../form-event/events-form.component";
 
 @Component({
   selector: 'app-add-event',

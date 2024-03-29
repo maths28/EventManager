@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {EventService} from "../../../service/event.service";
-import {ActivatedRoute} from "@angular/router";
 import {Event} from "../../../model/event";
-import {EventsFormComponent} from "../form/events-form.component";
+import {EventsFormComponent} from "../form-event/events-form.component";
 import {Observable} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 
