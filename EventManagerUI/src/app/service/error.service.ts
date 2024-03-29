@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 
@@ -12,8 +11,12 @@ export class ErrorService {
 
   constructor(private router: Router) { }
 
-  handleError(error: HttpErrorResponse){
-    this.errorMessage = error.error;
+  handleError(error: HttpErrorResponse|string){
+    if(error instanceof HttpErrorResponse){
+      this.errorMessage = error.error;
+    } else {
+      this.errorMessage = error;
+    }
     this.router.navigateByUrl("/error");
   }
 }
