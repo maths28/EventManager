@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ListEventComponent} from "../events/list-event/list-event.component";
-import {EventListType} from "../enum/EventListType";
+import {EventListType} from "../../enum/EventListType";
 import {LoginService} from "../../service/login.service";
 
 @Component({

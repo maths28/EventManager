@@ -30,7 +30,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {PageParticipant} from "../../../model/participant";
 import {Router, RouterLink} from "@angular/router";
 import {ActionForEventDialogData} from "../../dialog/action-for-event-dialog/ActionForEventDialogData";
-import {ActionForEventType} from "../../enum/ActionForEventType";
+import {ActionForEventType} from "../../../enum/ActionForEventType";
 import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialog/action-for-event-dialog.component";
 
 @Component({

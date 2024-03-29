@@ -1,4 +1,4 @@
-import {ActionForEventType} from "../../enum/ActionForEventType";
+import {ActionForEventType} from "../../../enum/ActionForEventType";
 import {Event} from "../../../model/event";
 import {User} from "../../../model/user";
 

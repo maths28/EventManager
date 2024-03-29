@@ -8,7 +8,7 @@ import {
 } from "@angular/material/dialog";
 import {ActionForEventDialogData, ActionForEventDialogTemplateData} from "./ActionForEventDialogData";
 import {MatButton} from "@angular/material/button";
-import {ActionForEventType} from "../../enum/ActionForEventType";
+import {ActionForEventType} from "../../../enum/ActionForEventType";
 import {Observable} from "rxjs";
 import {EventService} from "../../../service/event.service";
 import {ParticipantService} from "../../../service/participant.service";

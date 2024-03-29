@@ -17,9 +17,9 @@ import {FormsModule} from "@angular/forms";
 import {Observable, tap} from "rxjs";
 import {LoginService} from "../../../service/login.service";
 import {ParticipantService} from "../../../service/participant.service";
-import {EventListType} from "../../enum/EventListType";
+import {EventListType} from "../../../enum/EventListType";
 import {ActionForEventDialogData} from "../../dialog/action-for-event-dialog/ActionForEventDialogData";
-import {ActionForEventType} from "../../enum/ActionForEventType";
+import {ActionForEventType} from "../../../enum/ActionForEventType";
 import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialog/action-for-event-dialog.component";
 
 @Component({
