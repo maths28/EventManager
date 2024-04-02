@@ -81,9 +81,13 @@
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let event">
           @if (typeList === EventListType.ALL_EVENTS){
-            <button mat-button (click)="registerToEvent(event)">S'inscrire</button>
+            <button mat-icon-button (click)="registerToEvent(event)">
+              <mat-icon>add_circle</mat-icon>
+            </button>
           } @else {
-            <button mat-button (click)="unregisterToEvent(event)">Se désinscrire</button>
+            <button mat-icon-button (click)="unregisterToEvent(event)">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
           }
         </td>
       </ng-container>

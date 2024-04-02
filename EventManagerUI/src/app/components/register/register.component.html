@@ -1,7 +1,17 @@
 @if(submitted && (participant$ | async); as participant){
-  <p>Le particpant {{participant.firstName}} {{participant.lastName}} est créé !</p>
-  <p>Vous pouvez vous connecter</p>
-  <button mat-raised-button color="primary" routerLink="/login">Se connecter</button>
+  <div id="register-component">
+    <mat-card class="mat-mdc-elevation-specific mat-elevation-z8">
+      <mat-card-header>
+        <mat-card-title>Enregistrement validé !</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Le particpant {{participant.firstName}} {{participant.lastName}} est créé.</p>
+        <p>Vous pouvez vous connecter.</p>
+      </mat-card-content>
+    </mat-card>
+    <button mat-raised-button color="primary" routerLink="/login">Se connecter</button>
+  </div>
+
 } @else {
   <h1>Nouveau participant</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">

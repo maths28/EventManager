@@ -1,3 +1,16 @@
 #details-event, #participants-event {
   padding: 1%;
 }
+
+#details-event mat-card #toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+#details-event mat-card .mat-mdc-card-header-text {
+  width: 100% !important;
+}
+
+#details-event mat-card mat-card-title {
+  display: flex;
+  align-items: center;
+}

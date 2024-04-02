@@ -8,20 +8,25 @@ import {Observable} from "rxjs";
 import {Participant} from "../../model/participant";
 import {AsyncPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [
-    MatButton,
-    MatError,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    ReactiveFormsModule,
-    AsyncPipe,
-    RouterLink
-  ],
+    imports: [
+        MatButton,
+        MatError,
+        MatFormField,
+        MatInput,
+        MatLabel,
+        ReactiveFormsModule,
+        AsyncPipe,
+        RouterLink,
+        MatCard,
+        MatCardContent,
+        MatCardHeader,
+        MatCardTitle
+    ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })

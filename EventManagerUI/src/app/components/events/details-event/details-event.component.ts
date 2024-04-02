@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Event} from "../../../model/event";
 import {EventService} from "../../../service/event.service";
 import {Observable, tap} from "rxjs";
@@ -11,7 +11,7 @@ import {
   MatCardSubtitle,
   MatCardTitle
 } from "@angular/material/card";
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatDialog} from "@angular/material/dialog";
 import {
   MatCell,
@@ -32,6 +32,8 @@ import {Router, RouterLink} from "@angular/router";
 import {ActionForEventDialogData} from "../../dialog/action-for-event-dialog/ActionForEventDialogData";
 import {ActionForEventType} from "../../../enum/ActionForEventType";
 import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialog/action-for-event-dialog.component";
+import {MatToolbar} from "@angular/material/toolbar";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-details-event',
@@ -58,11 +60,15 @@ import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialo
     MatRow,
     MatRowDef,
     MatTable,
-    MatHeaderCellDef
+    MatHeaderCellDef,
+    MatToolbar,
+    MatIcon,
+    MatIconButton
   ],
   providers: [EventService],
   templateUrl: './details-event.component.html',
-  styleUrl: './details-event.component.css'
+  styleUrl: './details-event.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class DetailsEventComponent implements OnInit{
 
