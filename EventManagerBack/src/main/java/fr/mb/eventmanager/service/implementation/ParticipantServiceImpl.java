@@ -48,7 +48,7 @@ public class ParticipantServiceImpl implements IParticipantService {
         Participant participant = participantRepository.findById(participantId).orElseThrow(()-> new ParticipantNotFoundException(participantId));
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(()-> new EventNotFoundException(eventId));
-        if(event.getParticipants().size() == event.getMaxCapacity()) throw new EventFullException(eventId);
+        if(event.getTotalParticipants() == event.getMaxCapacity()) throw new EventFullException(eventId);
         participant.addEvent(event);
         return participantRepository.save(participant).getEvents().stream()
                 .map(eventOfParticipant -> modelMapper.map(eventOfParticipant, EventResource.class)).toList();

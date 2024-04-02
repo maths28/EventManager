@@ -56,7 +56,7 @@ import {MatToolbar} from "@angular/material/toolbar";
 export class ListEventComponent implements OnInit{
 
   events$ : Observable<PageEvent>;
-  private commonDisplayedColumns: string[] = ['name', 'description', 'startDate', 'endDate', 'location', 'maxCapacity'];
+  private commonDisplayedColumns: string[] = ['name', 'description', 'startDate', 'endDate', 'location', 'nbParticipants'];
   displayedColumns: string[];
   pageIndex: number = 0;
   pageSize: number = 5;

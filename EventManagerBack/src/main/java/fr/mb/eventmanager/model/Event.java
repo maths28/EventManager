@@ -1,12 +1,11 @@
 package fr.mb.eventmanager.model;
 
-import fr.mb.eventmanager.dto.event.EventResource;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,5 +24,6 @@ public class Event {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "events")
     @EqualsAndHashCode.Exclude
     private Set<Participant> participants;
-
+    @Formula("(SELECT COUNT(*) FROM participant_events WHERE participant_events.events_id = id)")
+    private int totalParticipants;
 }

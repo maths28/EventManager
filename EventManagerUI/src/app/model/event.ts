@@ -9,6 +9,7 @@ export class Event{
   location: string;
   maxCapacity: number;
   participants: Participant[];
+  totalParticipants: number;
 }
 
 export class PageEvent {
