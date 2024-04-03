@@ -9,6 +9,8 @@ import {Participant} from "../../model/participant";
 import {AsyncPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {ErrorStateMatcher} from "@angular/material/core";
+import {EmailErrorStateMatcher} from "./emailErrorStateMatcher";
 
 @Component({
   selector: 'app-register',
@@ -34,6 +36,7 @@ export class RegisterComponent implements OnInit{
   form: FormGroup;
   submitted: boolean;
   participant$: Observable<Participant>;
+  matcher: ErrorStateMatcher = new EmailErrorStateMatcher();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +45,7 @@ export class RegisterComponent implements OnInit{
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      email: ['', Validators.required, Validators.email],
+      email: ['', [Validators.required, Validators.email], this.participantService.existsByEmailValidator.bind(this.participantService)],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required]
     });

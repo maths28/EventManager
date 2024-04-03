@@ -3,5 +3,6 @@ export const environment = {
   ORGA_USER: {
     username: 'orga',
     password: 'orgapass'
-  }
+  },
+  DATE_TIME_FORMAT: 'YYYY-MM-DD HH:mm'
 };

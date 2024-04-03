@@ -9,7 +9,10 @@ import {Router} from "@angular/router";
 import {MatMomentDatetimeModule} from "@mat-datetimepicker/moment"
 import {MatDatetimepickerModule} from "@mat-datetimepicker/core";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import moment from "moment";
+import moment, {Moment} from "moment";
+import {endDateEventFormValidator, startDateEventFormValidator} from "../../../validators/event-form-validator";
+import {environment} from "../../../../environments/environment";
+import {MAT_DATETIME_FORMATS} from "@mat-datetimepicker/core"
 
 @Component({
   selector: 'app-events-form',
@@ -24,7 +27,25 @@ import moment from "moment";
     MatDatetimepickerModule,
   ],
   providers: [
-    EventService
+    EventService,
+    {
+      provide: MAT_DATETIME_FORMATS,
+      useValue: {
+        parse: {
+          datetimeInput: ['YYYY-MM-DD HH:mm', 'DD/MM/YYYY HH:mm'],
+        },
+        display: {
+          dateInput: 'L',
+          monthInput: 'MMMM',
+          datetimeInput: 'DD/MM/YYYY HH:mm',
+          timeInput: 'LT',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM YYYY',
+          popupHeaderDateLabel: 'ddd DD MMM',
+        }
+      }
+    }
   ],
   templateUrl: './events-form.component.html',
   styleUrl: './events-form.component.css'
@@ -44,10 +65,10 @@ export class EventsFormComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      startDate: ['', [Validators.required, startDateEventFormValidator]],
+      endDate: ['', [Validators.required, endDateEventFormValidator]],
       location: ['', Validators.required],
-      maxCapacity: [0, Validators.required]
+      maxCapacity: [1, [Validators.required, Validators.min(1), Validators.min(Math.max(1, this.event.totalParticipants))]]
     });
 
     this.form.patchValue(this.event);
@@ -76,6 +97,17 @@ export class EventsFormComponent implements OnInit {
 
   }
 
+  getMinEndDate(): Moment{
+    let rawValue = this.form.value.startDate;
+    if(!rawValue || rawValue === ""){
+      return moment();
+    }
+    let startDate: Moment = moment.isMoment(rawValue) ?
+      rawValue : moment(rawValue, environment.DATE_TIME_FORMAT);
 
+    return startDate.clone().add(5, 'minute');
 
+  }
+
+  protected readonly moment = moment;
 }

@@ -7,5 +7,6 @@ export const environment = {
   PARTICIPANT_USER: {
     username: '',
     password: ''
-  }
+  },
+  DATE_TIME_FORMAT: ''
 };

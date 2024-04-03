@@ -26,7 +26,11 @@
       autocomplete="false"
       formControlName="startDate"
       matInput
+      [min]="moment()"
     />
+    @if (form.get('startDate')?.errors?.startDate){
+      <mat-error>La date de début doit être dans le futur</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field>
@@ -46,7 +50,11 @@
       autocomplete="false"
       formControlName="endDate"
       matInput
+      [min]="getMinEndDate()"
     />
+    @if (form.get('endDate')?.errors?.endDate){
+      <mat-error>La date de fin doit être supérieure à la date de début</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field>
@@ -57,6 +65,13 @@
   <mat-form-field>
     <mat-label>Capacité maximum</mat-label>
     <input matInput formControlName="maxCapacity"/>
+    @if(event.totalParticipants > 1){
+      <mat-error>{{event.totalParticipants}} participants sont déjà inscrits.</mat-error>
+    } @else if (event.totalParticipants == 1){
+      <mat-error>{{event.totalParticipants}} participant est déjà inscrit.</mat-error>
+    } @else {
+      <mat-error>Un minimum d'une personne est requise pour l'évènement</mat-error>
+    }
   </mat-form-field>
 
   <button mat-button type="submit" [disabled]="form.invalid">Enregistrer</button>

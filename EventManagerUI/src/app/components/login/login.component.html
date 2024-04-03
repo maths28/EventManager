@@ -14,6 +14,6 @@
     <mat-error>Mauvais identifiants</mat-error>
   }
 
-  <button mat-button type="submit" [disabled]="form.disabled">Connexion</button>
+  <button mat-button type="submit" [disabled]="form.disabled || form.invalid">Connexion</button>
 </form>
 
