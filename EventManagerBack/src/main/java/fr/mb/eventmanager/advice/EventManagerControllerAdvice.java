@@ -2,7 +2,7 @@ package fr.mb.eventmanager.advice;
 
 
 import fr.mb.eventmanager.constant.ConstraintViolationMessageConstants;
-import fr.mb.eventmanager.dto.ConstraintViolationResponse;
+import fr.mb.eventmanager.dto.ErrorResponse;
 import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
 import fr.mb.eventmanager.dto.participant.ParticipantCreateRequest;
 import fr.mb.eventmanager.exception.EventManagerAppException;
@@ -22,27 +22,29 @@ import java.util.Comparator;
 public class EventManagerControllerAdvice {
 
     @ExceptionHandler(EventManagerAppException.class)
-    public ResponseEntity<String> handleAppException(EventManagerAppException exception){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handleAppException(EventManagerAppException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setResumeErrorMessage(exception.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ConstraintViolationResponse> handleConstraintException(MethodArgumentNotValidException exception){
-        ConstraintViolationResponse constraintViolationResponse = new ConstraintViolationResponse();
+    public ResponseEntity<ErrorResponse> handleConstraintException(MethodArgumentNotValidException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
 
         BindingResult bindingResult = exception.getBindingResult();
-        constraintViolationResponse.setIntroduceMessage(
+        errorResponse.setResumeErrorMessage(
                 this.getIntroduceConstraintViolationMessage(
                         bindingResult.getTarget(),
                         bindingResult.getErrorCount() > 1
                 )
         );
-        constraintViolationResponse.setConstraintViolationMessages(
+        errorResponse.setDetailedErrorMessages(
                 bindingResult.getAllErrors().stream()
                     .sorted(Comparator.comparing(this::getPath))
                     .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()
         );
-        return new ResponseEntity<>(constraintViolationResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     private String getPath(ObjectError objectError){

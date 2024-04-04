@@ -1,11 +1,18 @@
-@if (errorMessage){
+@if (errorResponse){
   <div id="error-component">
     <mat-card class="mat-mdc-elevation-specific mat-elevation-z8">
       <mat-card-header>
         <mat-card-title>Erreur !</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>{{errorMessage}}</p>
+        <p>{{errorResponse.resumeErrorMessage}}</p>
+        @if(errorResponse.detailedErrorMessages){
+          <ul>
+            @for (detailedError of errorResponse.detailedErrorMessages; track detailedError){
+                <li>{{detailedError}}</li>
+            }
+          </ul>
+        }
       </mat-card-content>
     </mat-card>
     <button mat-raised-button color="primary" routerLink="/">Retour à la page d'accueil</button>

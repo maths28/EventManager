@@ -11,6 +11,7 @@ import {
   MatCardTitle
 } from "@angular/material/card";
 import {RouterLink} from "@angular/router";
+import {ErrorResponse} from "../../model/errorResponse";
 
 @Component({
   selector: 'app-error',
@@ -32,13 +33,13 @@ import {RouterLink} from "@angular/router";
 })
 export class ErrorComponent implements OnInit{
 
-  errorMessage: string;
+  errorResponse: ErrorResponse;
 
   constructor(
     private errorService: ErrorService
   ) {}
 
   ngOnInit() {
-    this.errorMessage = this.errorService.errorMessage;
+    this.errorResponse = this.errorService.errorResponse;
   }
 }

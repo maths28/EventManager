@@ -5,7 +5,7 @@ import {inject} from "@angular/core";
 export const showErrorGuard: CanActivateFn = (route, state) => {
   const errorService: ErrorService = inject(ErrorService);
   const router : Router = inject(Router);
-  if(!errorService.errorMessage){
+  if(!errorService.errorResponse){
       router.navigateByUrl("/");
       return false;
   }
