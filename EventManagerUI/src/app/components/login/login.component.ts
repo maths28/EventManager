@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit{
   }
 
   async onSubmit(): Promise<void>{
+    if(this.form.valid){
       this.isSubmitted = false;
       this.form.disable();
       this.isLogged = await this.loginService.login(this.form.value.username, this.form.value.password);
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit{
       if(!this.isLogged){
         this.form.enable();
       }
+    }
   }
 
 

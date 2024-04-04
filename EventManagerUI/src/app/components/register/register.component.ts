@@ -52,9 +52,11 @@ export class RegisterComponent implements OnInit{
   }
 
   onSubmit(): void {
-    this.form.disable();
-    this.submitted = true;
-    let participant : Participant = this.form.value as Participant;
-    this.participant$ = this.participantService.registerParticipant(participant);
+    if(this.form.valid){
+      this.form.disable();
+      this.submitted = true;
+      let participant : Participant = this.form.value as Participant;
+      this.participant$ = this.participantService.registerParticipant(participant);
+    }
   }
 }
