@@ -60,7 +60,9 @@ public class EventManagerControllerAdvice {
                     ConstraintViolationMessageConstants.INTRODUCE_EVENT_CONSTRAINT_VIOLATION_MESSAGE;
         }
         if(object instanceof ParticipantCreateRequest){
-            return "";
+            return pluralize ?
+                    ConstraintViolationMessageConstants.INTRODUCE_MANY_PARTICIPANT_CONSTRAINT_VIOLATION_MESSAGE :
+                    ConstraintViolationMessageConstants.INTRODUCE_PARTICIPANT_CONSTRAINT_VIOLATION_MESSAGE;
         }
         return "";
     }
