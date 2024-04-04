@@ -3,10 +3,7 @@ package fr.mb.eventmanager.service.implementation;
 import fr.mb.eventmanager.dto.event.EventResource;
 import fr.mb.eventmanager.dto.participant.ParticipantCreateRequest;
 import fr.mb.eventmanager.dto.participant.ParticipantResource;
-import fr.mb.eventmanager.exception.EventFullException;
-import fr.mb.eventmanager.exception.EventNotFoundException;
-import fr.mb.eventmanager.exception.ParticipantNotFoundException;
-import fr.mb.eventmanager.exception.UserNotRegisteredForEventException;
+import fr.mb.eventmanager.exception.*;
 import fr.mb.eventmanager.repository.EventRepository;
 import fr.mb.eventmanager.repository.ParticipantRepository;
 import fr.mb.eventmanager.model.Event;
@@ -36,7 +33,10 @@ public class ParticipantServiceImpl implements IParticipantService {
     }
 
     @Override
-    public ParticipantResource createParticipant(ParticipantCreateRequest participantCreateRequest) {
+    public ParticipantResource createParticipant(ParticipantCreateRequest participantCreateRequest)
+        throws ParticipantEmailAlreadyExistsException{
+        if(participantRepository.findByEmail(participantCreateRequest.getEmail()).isPresent())
+            throw new ParticipantEmailAlreadyExistsException(participantCreateRequest.getEmail());
         Participant participant = participantRepository.save(
                 modelMapper.map(participantCreateRequest, Participant.class)
         );
