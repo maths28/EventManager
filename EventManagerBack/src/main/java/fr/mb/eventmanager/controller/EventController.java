@@ -4,8 +4,11 @@ import fr.mb.eventmanager.dto.event.EventResource;
 import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
 import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.EventNotFoundException;
+import fr.mb.eventmanager.exception.MaxCapacitySmallerThanTotalPartException;
 import fr.mb.eventmanager.service.IEventService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,12 +30,15 @@ public class EventController {
     }
 
     @PostMapping
-    public EventResource createEvent(@RequestBody EventCreateOrUpdateRequest eventCreateRequest){
+    public EventResource createEvent(@RequestBody @Valid EventCreateOrUpdateRequest eventCreateRequest){
         return eventService.saveEvent(eventCreateRequest);
     }
 
     @PutMapping("/{id}")
-    public EventResource updateEvent(@PathVariable("id") int eventId, @RequestBody EventCreateOrUpdateRequest eventUpdateRequest) throws EventNotFoundException {
+    public EventResource updateEvent(
+            @PathVariable("id") int eventId,
+            @RequestBody @Valid EventCreateOrUpdateRequest eventUpdateRequest
+    ) throws EventNotFoundException, MaxCapacitySmallerThanTotalPartException {
         return eventService.updateEvent(eventId, eventUpdateRequest);
     }
 

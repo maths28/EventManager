@@ -17,6 +17,6 @@ public class EventResource {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String location;
-    private int maxCapacity;
+    private Integer maxCapacity;
     private int totalParticipants;
 }

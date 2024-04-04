@@ -4,6 +4,7 @@ import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
 import fr.mb.eventmanager.dto.event.EventResource;
 import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.EventNotFoundException;
+import fr.mb.eventmanager.exception.MaxCapacitySmallerThanTotalPartException;
 import fr.mb.eventmanager.model.Event;
 import fr.mb.eventmanager.repository.EventRepository;
 import fr.mb.eventmanager.repository.ParticipantRepository;
@@ -40,8 +41,11 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public EventResource updateEvent(int eventId, EventCreateOrUpdateRequest eventUpdateRequest) throws EventNotFoundException {
+    public EventResource updateEvent(int eventId, EventCreateOrUpdateRequest eventUpdateRequest) throws EventNotFoundException, MaxCapacitySmallerThanTotalPartException {
         if(!this.eventRepository.existsById(eventId)) throw new EventNotFoundException(eventId);
+        Integer totalParticipantsOfEvent = this.participantRepository.countByEventsId(eventId);
+        if(totalParticipantsOfEvent > eventUpdateRequest.getMaxCapacity())
+            throw new MaxCapacitySmallerThanTotalPartException(totalParticipantsOfEvent);
         Event event = modelMapper.map(eventUpdateRequest, Event.class);
         event.setId(eventId);
         return modelMapper.map(eventRepository.save(event), EventResource.class);

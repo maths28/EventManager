@@ -68,7 +68,7 @@ export class EventsFormComponent implements OnInit {
       startDate: ['', [Validators.required, startDateEventFormValidator]],
       endDate: ['', [Validators.required, endDateEventFormValidator]],
       location: ['', Validators.required],
-      maxCapacity: [1, [Validators.required, Validators.min(1), Validators.min(Math.max(1, this.event.totalParticipants))]]
+      maxCapacity: [1, [Validators.required, Validators.min(Math.max(1, this.event.totalParticipants))]]
     });
 
     this.form.patchValue(this.event);
