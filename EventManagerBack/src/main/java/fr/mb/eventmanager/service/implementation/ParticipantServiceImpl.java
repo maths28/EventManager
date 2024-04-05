@@ -37,10 +37,9 @@ public class ParticipantServiceImpl implements IParticipantService {
         throws ParticipantEmailAlreadyExistsException{
         if(participantRepository.findByEmail(participantCreateRequest.getEmail()).isPresent())
             throw new ParticipantEmailAlreadyExistsException(participantCreateRequest.getEmail());
-        Participant participant = participantRepository.save(
-                modelMapper.map(participantCreateRequest, Participant.class)
-        );
-        return modelMapper.map(participant, ParticipantResource.class);
+        Participant participant = modelMapper.map(participantCreateRequest, Participant.class);
+        participant.setRole("PARTICIPANT");
+        return modelMapper.map(this.participantRepository.save(participant), ParticipantResource.class);
     }
 
     @Override

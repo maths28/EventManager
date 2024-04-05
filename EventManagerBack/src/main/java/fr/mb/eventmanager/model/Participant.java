@@ -8,14 +8,11 @@ import java.util.Set;
 
 @Entity
 @Data
-public class Participant {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("P")
+public class Participant extends User {
     private String firstName;
     private String lastName;
-    private String email;
     @ManyToMany(fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     private Set<Event> events;

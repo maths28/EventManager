@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.*;
 import org.hibernate.generator.EventType;
 
 import java.time.LocalDateTime;
@@ -30,7 +28,7 @@ public class Event {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "events")
     @EqualsAndHashCode.Exclude
     private Set<Participant> participants;
-    @Formula("(SELECT COUNT(*) FROM participant_events WHERE participant_events.events_id = id)")
+    @Formula("(SELECT COUNT(*) FROM users_events WHERE users_events.events_id = id)")
     @Generated(event ={EventType.INSERT, EventType.UPDATE})
     private int totalParticipants;
 }
