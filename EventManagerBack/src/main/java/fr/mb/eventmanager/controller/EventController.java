@@ -30,6 +30,7 @@ public class EventController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public EventResource createEvent(@RequestBody @Valid EventCreateOrUpdateRequest eventCreateRequest){
         return eventService.saveEvent(eventCreateRequest);
     }
@@ -43,6 +44,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelEvent(@PathVariable("id") int eventId) throws EventNotFoundException{
         eventService.deleteEvent(eventId);
     }

@@ -7,6 +7,7 @@ import fr.mb.eventmanager.exception.*;
 import fr.mb.eventmanager.service.IParticipantService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class ParticipantController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ParticipantResource createParticipant(@RequestBody @Valid ParticipantCreateRequest participantCreateRequest)
         throws ParticipantEmailAlreadyExistsException {
             return participantService.createParticipant(participantCreateRequest);
