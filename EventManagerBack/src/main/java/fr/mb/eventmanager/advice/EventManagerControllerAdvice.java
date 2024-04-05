@@ -1,6 +1,7 @@
 package fr.mb.eventmanager.advice;
 
 
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import fr.mb.eventmanager.constant.ConstraintViolationMessageConstants;
 import fr.mb.eventmanager.dto.ErrorResponse;
 import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
@@ -9,6 +10,7 @@ import fr.mb.eventmanager.exception.EventManagerAppException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Comparator;
 
 @ControllerAdvice
@@ -25,6 +29,17 @@ public class EventManagerControllerAdvice {
     public ResponseEntity<ErrorResponse> handleAppException(EventManagerAppException exception){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setResumeErrorMessage(exception.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHTTPMessageNotReadableException(HttpMessageNotReadableException exception) throws IOException {
+        ErrorResponse errorResponse = new ErrorResponse();
+        if(exception.getCause() instanceof InvalidTypeIdException){
+            errorResponse.setResumeErrorMessage("Le rôle de l'utilisateur n'a pas été identifié");
+        } else {
+            errorResponse.setResumeErrorMessage(exception.getMessage());
+        }
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 

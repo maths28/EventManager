@@ -1,9 +1,8 @@
-export class Participant{
-  id: number;
+import {User} from "./user";
+
+export class Participant extends User {
   firstName: string;
   lastName: string;
-  email: string;
-  events: string;
 }
 
 export class PageParticipant {

@@ -12,7 +12,7 @@ import {MatButtonModule, MatIconButton} from "@angular/material/button";
 import {RouterLink} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
-import {MatInput, MatInputModule} from "@angular/material/input";
+import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {debounceTime, distinctUntilChanged, Observable, Subject, tap} from "rxjs";
 import {LoginService} from "../../../service/login.service";
@@ -106,7 +106,7 @@ export class ListEventComponent implements OnInit{
   loadPage(){
     let events$: Observable<PageEvent>;
     if(this.typeList === EventListType.ALL_EVENTS) {
-      const excludeParticipantId = this.role === "ORGA" ? undefined : this.loginService.getUser()!.userId
+      const excludeParticipantId = this.role === "ORGA" ? undefined : this.loginService.getUser()!.id
       events$ = this.eventService.getAllFutureEvents(this.pageSize, this.pageIndex, this.location, excludeParticipantId);
     } else {
       events$ = this.participantService.getEvents(this.loginService.getUser()!, this.pageSize, this.pageIndex)

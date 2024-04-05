@@ -46,6 +46,7 @@ export class RegisterComponent implements OnInit{
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email], this.participantService.existsByEmailValidator.bind(this.participantService)],
+      password: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required]
     });
@@ -56,6 +57,7 @@ export class RegisterComponent implements OnInit{
       this.form.disable();
       this.submitted = true;
       let participant : Participant = this.form.value as Participant;
+      participant.role = 'PARTICIPANT';
       this.participant$ = this.participantService.registerParticipant(participant);
     }
   }

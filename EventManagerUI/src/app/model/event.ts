@@ -8,7 +8,6 @@ export class Event{
   endDate: string;
   location: string;
   maxCapacity: number;
-  participants: Participant[];
   totalParticipants: number;
 }
 

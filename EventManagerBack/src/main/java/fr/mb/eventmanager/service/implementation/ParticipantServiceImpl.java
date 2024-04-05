@@ -38,7 +38,6 @@ public class ParticipantServiceImpl implements IParticipantService {
         if(participantRepository.findByEmail(participantCreateRequest.getEmail()).isPresent())
             throw new ParticipantEmailAlreadyExistsException(participantCreateRequest.getEmail());
         Participant participant = modelMapper.map(participantCreateRequest, Participant.class);
-        participant.setRole("PARTICIPANT");
         return modelMapper.map(this.participantRepository.save(participant), ParticipantResource.class);
     }
 
@@ -49,6 +48,7 @@ public class ParticipantServiceImpl implements IParticipantService {
                 .orElseThrow(()-> new EventNotFoundException(eventId));
         if(event.getTotalParticipants() == event.getMaxCapacity()) throw new EventFullException(eventId);
         participant.addEvent(event);
+        event.setTotalParticipants(event.getTotalParticipants()+1);
         return participantRepository.save(participant).getEvents().stream()
                 .map(eventOfParticipant -> modelMapper.map(eventOfParticipant, EventResource.class)).toList();
     }

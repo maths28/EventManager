@@ -32,15 +32,15 @@ export class ParticipantService {
   }
 
   registerParticipantToEvent(participant: User, event: Event): Observable<Event[]>{
-    return this.httpClient.post<Event[]>(`${environment.BASE_URL}participants/${participant.userId}/events/${event.id}`, null);
+    return this.httpClient.post<Event[]>(`${environment.BASE_URL}participants/${participant.id}/events/${event.id}`, null);
   }
 
   unregisterParticipantToEvent(participant: User, event: Event): Observable<null>{
-    return this.httpClient.delete<null>(`${environment.BASE_URL}participants/${participant.userId}/events/${event.id}`);
+    return this.httpClient.delete<null>(`${environment.BASE_URL}participants/${participant.id}/events/${event.id}`);
   }
 
   getEvents(participant: User, pageSize: number, pageNumber: number): Observable<PageEvent>{
-    return this.httpClient.get<PageEvent>(`${environment.BASE_URL}participants/${participant.userId}/events`, {
+    return this.httpClient.get<PageEvent>(`${environment.BASE_URL}participants/${participant.id}/events`, {
       params: {
         pageSize: pageSize,
         pageNumber: pageNumber

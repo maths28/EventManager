@@ -18,7 +18,7 @@ export class LoginService {
   isLogged(): boolean {
     if(!this.userLogged && sessionStorage.getItem('user')){
       let user: User = JSON.parse(sessionStorage.getItem('user') || '') as User;
-      this.userLogged = new User(user.userId, user.role);
+      this.userLogged = new User(user.id, user.role);
     }
     return this.userLogged != undefined;
   }
