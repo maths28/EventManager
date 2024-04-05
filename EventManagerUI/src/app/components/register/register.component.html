@@ -13,30 +13,41 @@
   </div>
 
 } @else {
-  <h1>Nouveau participant</h1>
+  <h1>Nouvel utilisateur</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" [errorStateMatcher]="matcher"/>
-      @if (form.get('email')?.errors?.uniqueEmail){
-        <mat-error>Ce mail est déjà utilisé</mat-error>
-      }
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="ORGA">Organisateur</mat-option>
+        <mat-option value="PARTICIPANT">Participant</mat-option>
+      </mat-select>
     </mat-form-field>
+    @if(form.value.role) {
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" [errorStateMatcher]="matcher"/>
+        @if (form.get('email')?.errors?.uniqueEmail){
+          <mat-error>Ce mail est déjà utilisé</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Mot de passe</mat-label>
-      <input matInput formControlName="password" type="password"/>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Mot de passe</mat-label>
+        <input matInput formControlName="password" type="password"/>
+      </mat-form-field>
+    }
 
-    <mat-form-field>
-      <mat-label>Nom</mat-label>
-      <input matInput  formControlName="firstName"/>
-    </mat-form-field>
+    @if(form.value.role == 'PARTICIPANT'){
+      <mat-form-field>
+        <mat-label>Nom</mat-label>
+        <input matInput  formControlName="firstName"/>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Prénom</mat-label>
-      <input matInput formControlName="lastName"/>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="lastName"/>
+      </mat-form-field>
+    }
 
     <button mat-button type="submit" [disabled]="form.disabled || form.invalid">S'enregistrer</button>
   </form>
