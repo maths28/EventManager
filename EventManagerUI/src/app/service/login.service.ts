@@ -2,9 +2,8 @@ import {Injectable} from '@angular/core';
 import {User} from "../model/user";
 import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
-import {Participant} from "../model/participant";
 import {firstValueFrom} from "rxjs";
-import {ParticipantService} from "./participant.service";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,7 @@ export class LoginService {
 
   private userLogged: User | undefined = undefined;
 
-  constructor(private router: Router, private participantService: ParticipantService) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   isLogged(): boolean {
     if(!this.userLogged && sessionStorage.getItem('user')){
@@ -50,7 +49,7 @@ export class LoginService {
 
   private async loginParticipant(username: string, password: string): Promise<void>{
     if(username === password ) {
-      const participant: Participant|undefined = await firstValueFrom(this.participantService.findByEmail(username));
+      const participant: User|undefined = await firstValueFrom(this.userService.findByEmail(username));
 
       if(participant){
         this.userLogged = new User(participant.id, 'PARTICIPANT');

@@ -23,18 +23,6 @@ public class ParticipantController {
         this.participantService = participantService;
     }
 
-    @GetMapping("/search")
-    public ParticipantResource findParticipantByEmail(@RequestParam String email){
-        return this.participantService.findParticipantByEmail(email);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ParticipantResource createParticipant(@RequestBody @Valid ParticipantCreateRequest participantCreateRequest)
-        throws ParticipantEmailAlreadyExistsException {
-            return participantService.createParticipant(participantCreateRequest);
-    }
-
     @PostMapping("/{participantId}/events/{eventId}")
     public List<EventResource> registerParticipantToEvent(@PathVariable int participantId, @PathVariable int eventId
     ) throws EventNotFoundException, ParticipantNotFoundException, EventFullException {

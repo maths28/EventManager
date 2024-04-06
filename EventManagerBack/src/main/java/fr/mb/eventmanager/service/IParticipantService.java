@@ -10,9 +10,6 @@ import java.util.List;
 
 public interface IParticipantService {
 
-    public ParticipantResource createParticipant(ParticipantCreateRequest participantCreateRequest)
-            throws ParticipantEmailAlreadyExistsException;
-
     public List<EventResource> registerParticipantToEvent(int participantId, int eventId)
             throws ParticipantNotFoundException, EventNotFoundException, EventFullException;
 
@@ -21,7 +18,5 @@ public interface IParticipantService {
     ) throws ParticipantNotFoundException, UserNotRegisteredForEventException;
 
     public Page<EventResource> findAllEventsForParticipant(int participantId, int pageSize, int pageNumber) throws ParticipantNotFoundException;
-
-    public ParticipantResource findParticipantByEmail(String email);
 
 }

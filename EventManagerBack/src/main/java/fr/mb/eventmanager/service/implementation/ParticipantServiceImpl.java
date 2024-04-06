@@ -24,25 +24,13 @@ public class ParticipantServiceImpl implements IParticipantService {
 
     private final EventRepository eventRepository;
 
-    private final ParticipantMapper participantMapper;
-
     private final EventMapper eventMapper;
 
 
-    public ParticipantServiceImpl(ParticipantRepository participantRepository, EventRepository eventRepository, ParticipantMapper participantMapper, EventMapper eventMapper) {
+    public ParticipantServiceImpl(ParticipantRepository participantRepository, EventRepository eventRepository, EventMapper eventMapper) {
         this.participantRepository = participantRepository;
         this.eventRepository = eventRepository;
-        this.participantMapper = participantMapper;
         this.eventMapper = eventMapper;
-    }
-
-    @Override
-    public ParticipantResource createParticipant(ParticipantCreateRequest participantCreateRequest)
-        throws ParticipantEmailAlreadyExistsException{
-        if(participantRepository.findByEmail(participantCreateRequest.getEmail()).isPresent())
-            throw new ParticipantEmailAlreadyExistsException(participantCreateRequest.getEmail());
-        Participant participant = participantMapper.toParticipant(participantCreateRequest);
-        return participantMapper.toParticipantResource(this.participantRepository.save(participant));
     }
 
     @Override
@@ -71,11 +59,5 @@ public class ParticipantServiceImpl implements IParticipantService {
         return eventRepository.findAllByParticipantsId(participantId, PageRequest.of(pageNumber, pageSize)).map(
                 eventMapper::toEventResource
         );
-    }
-
-    @Override
-    public ParticipantResource findParticipantByEmail(String email) {
-        return this.participantRepository.findByEmail(email).map(participantMapper::toParticipantResource)
-                .orElse(null);
     }
 }

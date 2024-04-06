@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Integer> {
     Page<Participant> findAllByEventsId(int id, Pageable pageable);
-    Optional<Participant> findByEmail(String email);
     Integer countByEventsId(int eventId);
 }
