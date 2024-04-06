@@ -4,6 +4,8 @@ import fr.mb.eventmanager.dto.event.EventResource;
 import fr.mb.eventmanager.dto.participant.ParticipantCreateRequest;
 import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.*;
+import fr.mb.eventmanager.mapper.EventMapper;
+import fr.mb.eventmanager.mapper.ParticipantMapper;
 import fr.mb.eventmanager.repository.EventRepository;
 import fr.mb.eventmanager.repository.ParticipantRepository;
 import fr.mb.eventmanager.model.Event;
@@ -23,13 +25,16 @@ public class ParticipantServiceImpl implements IParticipantService {
 
     private final EventRepository eventRepository;
 
-    private final ModelMapper modelMapper;
+    private final ParticipantMapper participantMapper;
+
+    private final EventMapper eventMapper;
 
 
-    public ParticipantServiceImpl(ParticipantRepository participantRepository, EventRepository eventRepository, ModelMapper modelMapper) {
+    public ParticipantServiceImpl(ParticipantRepository participantRepository, EventRepository eventRepository, ParticipantMapper participantMapper, EventMapper eventMapper) {
         this.participantRepository = participantRepository;
         this.eventRepository = eventRepository;
-        this.modelMapper = modelMapper;
+        this.participantMapper = participantMapper;
+        this.eventMapper = eventMapper;
     }
 
     @Override
@@ -37,8 +42,8 @@ public class ParticipantServiceImpl implements IParticipantService {
         throws ParticipantEmailAlreadyExistsException{
         if(participantRepository.findByEmail(participantCreateRequest.getEmail()).isPresent())
             throw new ParticipantEmailAlreadyExistsException(participantCreateRequest.getEmail());
-        Participant participant = modelMapper.map(participantCreateRequest, Participant.class);
-        return modelMapper.map(this.participantRepository.save(participant), ParticipantResource.class);
+        Participant participant = participantMapper.toParticipant(participantCreateRequest);
+        return participantMapper.toParticipantResource(this.participantRepository.save(participant));
     }
 
     @Override
@@ -50,7 +55,7 @@ public class ParticipantServiceImpl implements IParticipantService {
         participant.addEvent(event);
         event.setTotalParticipants(event.getTotalParticipants()+1);
         return participantRepository.save(participant).getEvents().stream()
-                .map(eventOfParticipant -> modelMapper.map(eventOfParticipant, EventResource.class)).toList();
+                .map(eventMapper::toEventResource).toList();
     }
 
     @Override
@@ -58,20 +63,20 @@ public class ParticipantServiceImpl implements IParticipantService {
         Participant participant = participantRepository.findById(participantId).orElseThrow(()-> new ParticipantNotFoundException(participantId));
         if(!participant.removeEvent(eventId)) throw new UserNotRegisteredForEventException(eventId);
         return participantRepository.save(participant).getEvents().stream()
-                .map(eventOfParticipant -> modelMapper.map(eventOfParticipant, EventResource.class)).toList();
+                .map(eventMapper::toEventResource).toList();
     }
 
     @Override
     public Page<EventResource> findAllEventsForParticipant(int participantId, int pageSize, int pageNumber) throws ParticipantNotFoundException {
         if(!participantRepository.existsById(participantId)) throw new ParticipantNotFoundException(participantId);
         return eventRepository.findAllByParticipantsId(participantId, PageRequest.of(pageNumber, pageSize)).map(
-                eventOfParticipant -> modelMapper.map(eventOfParticipant, EventResource.class)
+                eventMapper::toEventResource
         );
     }
 
     @Override
     public ParticipantResource findParticipantByEmail(String email) {
-        return this.participantRepository.findByEmail(email).map((participant -> modelMapper.map(participant, ParticipantResource.class)))
+        return this.participantRepository.findByEmail(email).map(participantMapper::toParticipantResource)
                 .orElse(null);
     }
 }

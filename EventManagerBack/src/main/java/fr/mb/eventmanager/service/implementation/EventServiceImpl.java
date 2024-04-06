@@ -5,11 +5,12 @@ import fr.mb.eventmanager.dto.event.EventResource;
 import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.EventNotFoundException;
 import fr.mb.eventmanager.exception.MaxCapacitySmallerThanTotalPartException;
+import fr.mb.eventmanager.mapper.EventMapper;
+import fr.mb.eventmanager.mapper.ParticipantMapper;
 import fr.mb.eventmanager.model.Event;
 import fr.mb.eventmanager.repository.EventRepository;
 import fr.mb.eventmanager.repository.ParticipantRepository;
 import fr.mb.eventmanager.service.IEventService;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,24 +21,26 @@ public class EventServiceImpl implements IEventService {
 
     private final EventRepository eventRepository;
     private final ParticipantRepository participantRepository;
-    private final ModelMapper modelMapper;
+    private final EventMapper eventMapper;
+    private final ParticipantMapper participantMapper;
 
-    public EventServiceImpl(EventRepository eventRepository, ParticipantRepository participantRepository, ModelMapper modelMapper) {
+    public EventServiceImpl(EventRepository eventRepository, ParticipantRepository participantRepository, EventMapper eventMapper, ParticipantMapper participantMapper) {
         this.eventRepository = eventRepository;
         this.participantRepository = participantRepository;
-        this.modelMapper = modelMapper;
+        this.eventMapper = eventMapper;
+        this.participantMapper = participantMapper;
     }
 
     @Override
     public EventResource getEvent(int eventId) throws EventNotFoundException{
-        return this.eventRepository.findById(eventId).map((event -> modelMapper.map(event, EventResource.class)))
+        return this.eventRepository.findById(eventId).map(eventMapper::toEventResource)
                 .orElseThrow(()->new EventNotFoundException(eventId));
     }
 
     @Override
     public EventResource saveEvent(EventCreateOrUpdateRequest eventSaveRequest) {
-        Event event = this.eventRepository.save(modelMapper.map(eventSaveRequest, Event.class));
-        return modelMapper.map(event, EventResource.class);
+        Event event = this.eventRepository.save(eventMapper.toEvent(eventSaveRequest));
+        return eventMapper.toEventResource(event);
     }
 
     @Override
@@ -46,9 +49,9 @@ public class EventServiceImpl implements IEventService {
         Integer totalParticipantsOfEvent = this.participantRepository.countByEventsId(eventId);
         if(totalParticipantsOfEvent > eventUpdateRequest.getMaxCapacity())
             throw new MaxCapacitySmallerThanTotalPartException(totalParticipantsOfEvent);
-        Event event = modelMapper.map(eventUpdateRequest, Event.class);
+        Event event = eventMapper.toEvent(eventUpdateRequest);
         event.setId(eventId);
-        return modelMapper.map(eventRepository.save(event), EventResource.class);
+        return eventMapper.toEventResource(eventRepository.save(event));
     }
 
     @Override
@@ -72,13 +75,13 @@ public class EventServiceImpl implements IEventService {
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return eventRepository.findAllFutureEvents(location, excludeParticipantId, pageable)
-                .map(event -> modelMapper.map(event, EventResource.class));
+                .map(eventMapper::toEventResource);
     }
 
     @Override
     public Page<ParticipantResource> findAllParticipantsForEvent(int eventId, int pageSize, int pageNumber) throws EventNotFoundException {
         if(!this.eventRepository.existsById(eventId)) throw new EventNotFoundException(eventId);
         return this.participantRepository.findAllByEventsId(eventId, PageRequest.of(pageNumber,pageSize))
-                .map(participant -> modelMapper.map(participant, ParticipantResource.class));
+                .map(participantMapper::toParticipantResource);
     }
 }
