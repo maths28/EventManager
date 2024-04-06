@@ -8,4 +8,5 @@ public interface IUserService {
 
     UserResource createUser(UserCreateRequest userCreateRequest) throws UserEmailAlreadyExistsException;
 
+    public UserResource findParticipantByEmail(String email);
 }

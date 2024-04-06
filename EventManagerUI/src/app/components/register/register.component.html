@@ -1,11 +1,16 @@
-@if(submitted && (participant$ | async); as participant){
+@if(submitted && (user$ | async); as user){
   <div id="register-component">
     <mat-card class="mat-mdc-elevation-specific mat-elevation-z8">
       <mat-card-header>
         <mat-card-title>Enregistrement validé !</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>Le particpant {{participant.firstName}} {{participant.lastName}} est créé.</p>
+        @if(user.role == 'ORGA'){
+          <p>L'organisateur est créé.</p>
+        }
+        @else if(user.role == 'PARTICIPANT'){
+          <p>Le participant {{asParticipant(user).firstName}} {{asParticipant(user).lastName}} est créé.</p>
+        }
         <p>Vous pouvez vous connecter.</p>
       </mat-card-content>
     </mat-card>

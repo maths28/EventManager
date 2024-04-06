@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin("http://localhost:4200")
 @AllArgsConstructor
 public class UserController {
 
@@ -24,6 +25,11 @@ public class UserController {
     public UserResource createParticipant(@RequestBody @Valid UserCreateRequest userCreateRequest)
             throws UserEmailAlreadyExistsException {
         return userService.createUser(userCreateRequest);
+    }
+
+    @GetMapping("/search")
+    public UserResource findUserByEmail(@RequestParam String email){
+        return this.userService.findParticipantByEmail(email);
     }
 
 }

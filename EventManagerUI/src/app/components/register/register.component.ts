@@ -3,7 +3,6 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {MatButton} from "@angular/material/button";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {ParticipantService} from "../../service/participant.service";
 import {Observable} from "rxjs";
 import {Participant} from "../../model/participant";
 import {AsyncPipe} from "@angular/common";
@@ -12,6 +11,8 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/mat
 import {ErrorStateMatcher, MatOption} from "@angular/material/core";
 import {EmailErrorStateMatcher} from "./emailErrorStateMatcher";
 import {MatSelect} from "@angular/material/select";
+import {User} from "../../model/user";
+import {UserService} from "../../service/user.service";
 
 @Component({
   selector: 'app-register',
@@ -38,18 +39,18 @@ import {MatSelect} from "@angular/material/select";
 export class RegisterComponent implements OnInit{
   form: FormGroup;
   submitted: boolean;
-  participant$: Observable<Participant>;
+  user$: Observable<User>;
   matcher: ErrorStateMatcher = new EmailErrorStateMatcher();
 
   constructor(
     private formBuilder: FormBuilder,
-    private participantService: ParticipantService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       role: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email], this.participantService.existsByEmailValidator.bind(this.participantService)],
+      email: ['', [Validators.required, Validators.email], this.userService.existsByEmailValidator.bind(this.userService)],
       password: ['', Validators.required]
     });
 
@@ -70,8 +71,18 @@ export class RegisterComponent implements OnInit{
     if(this.form.valid){
       this.form.disable({emitEvent: false});
       this.submitted = true;
-      let participant : Participant = this.form.value as Participant;
-      this.participant$ = this.participantService.registerParticipant(participant);
+      let user : User;
+      if(this.form.value.role == 'ORGA'){
+        user = this.form.value as User;
+      } else {
+        user = this.form.value as Participant;
+      }
+      this.user$ = this.userService.registerUser(user);
     }
   }
+
+  asParticipant(user: User) : Participant{
+    return user as Participant;
+  }
+
 }

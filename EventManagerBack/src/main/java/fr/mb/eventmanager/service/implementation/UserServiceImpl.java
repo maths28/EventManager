@@ -25,5 +25,11 @@ public class UserServiceImpl implements IUserService {
         User user = userMapper.toUser(userCreateRequest);
         return userMapper.toUserResource(this.userRepository.save(user));
     }
+
+    @Override
+    public UserResource findParticipantByEmail(String email) {
+        return this.userRepository.findByEmail(email).map(userMapper::toUserResource)
+                .orElse(null);
+    }
 }
 
