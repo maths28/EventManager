@@ -14,8 +14,12 @@ export class ErrorService {
 
   handleError(rawErrorResponse: HttpErrorResponse|string){
     if(rawErrorResponse instanceof HttpErrorResponse){
-      const rawErrorContent = rawErrorResponse.error;
-      this.errorResponse = new ErrorResponse(rawErrorContent.resumeErrorMessage, rawErrorContent.detailedErrorMessages)
+      if(rawErrorResponse.status == 401){
+        this.errorResponse = new ErrorResponse("Vous n'avez pas les accès à cette page !")
+      } else {
+        const rawErrorContent = rawErrorResponse.error;
+        this.errorResponse = new ErrorResponse(rawErrorContent.resumeErrorMessage, rawErrorContent.detailedErrorMessages)
+      }
     } else {
       this.errorResponse = new ErrorResponse(rawErrorResponse);
     }

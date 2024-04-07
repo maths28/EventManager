@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/participants")
-@CrossOrigin("http://localhost:4200")
 public class ParticipantController {
 
     private final IParticipantService participantService;

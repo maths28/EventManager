@@ -3,7 +3,8 @@ import {User} from "../model/user";
 import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
 import {firstValueFrom} from "rxjs";
-import {UserService} from "./user.service";
+import {Participant} from "../model/participant";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,20 @@ export class LoginService {
 
   private userLogged: User | undefined = undefined;
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient
+  ) { }
 
   isLogged(): boolean {
     if(!this.userLogged && sessionStorage.getItem('user')){
       let user: User = JSON.parse(sessionStorage.getItem('user') || '') as User;
-      this.userLogged = new User(user.id, user.role);
+      if(user.role == 'ORGA'){
+        this.userLogged = new User();
+      } else {
+        this.userLogged = new Participant();
+      }
+      Object.assign(this.userLogged, user);
     }
     return this.userLogged != undefined;
   }
@@ -34,33 +43,33 @@ export class LoginService {
     return this.userLogged != undefined;
   }
 
-  private async processLogin(username: string, password: string): Promise<void> {
-    this.loginOrga(username, password);
-    if(!this.userLogged){
-      await this.loginParticipant(username, password);
-    }
-  }
+  private async processLogin(username: string, password: string): Promise<void>{
+    const user: User|undefined = await firstValueFrom(
+      this.httpClient.get<User>(`${environment.BASE_URL}login`,{
+        headers: {
+          Authorization: 'Basic ' + btoa(`${username}:${password}`)
+        }
+      })
+    ).catch((err) => undefined);
 
-  private loginOrga(username: string, password: string): void{
-    if(username === environment.ORGA_USER.username && password === environment.ORGA_USER.password) {
-      this.userLogged = new User(0, 'ORGA');
-    }
-  }
-
-  private async loginParticipant(username: string, password: string): Promise<void>{
-    if(username === password ) {
-      const participant: User|undefined = await firstValueFrom(this.userService.findByEmail(username));
-
-      if(participant){
-        this.userLogged = new User(participant.id, 'PARTICIPANT');
+    if(user){
+      if(user.role == 'ORGA'){
+        this.userLogged = new User();
+      } else {
+        this.userLogged = new Participant();
       }
+      Object.assign(this.userLogged, user);
     }
   }
 
   logout() : void{
-    this.userLogged = undefined;
-    sessionStorage.removeItem('user');
-    this.router.navigate( ['/']);
+    this.httpClient.get<null>(`${environment.BASE_URL}logout`)
+      .subscribe((response)=> {
+        this.userLogged = undefined;
+        sessionStorage.removeItem('user');
+        this.router.navigate( ['/login']);
+      })
+
   }
 
   getUser(): User | undefined{
