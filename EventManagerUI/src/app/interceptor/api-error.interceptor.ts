@@ -5,7 +5,7 @@ import {ErrorService} from "../service/error.service";
 import {Router} from "@angular/router";
 import {LoginService} from "../service/login.service";
 
-export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const errorService: ErrorService = inject(ErrorService);
   const router : Router = inject(Router);
   const loginService: LoginService = inject(LoginService);

@@ -63,7 +63,7 @@ export class LoginService {
   }
 
   logout() : void{
-    this.httpClient.get<null>(`${environment.BASE_URL}logout`)
+    this.httpClient.post<null>(`${environment.BASE_URL}logout`, null)
       .subscribe((response)=> {
         this.userLogged = undefined;
         sessionStorage.removeItem('user');

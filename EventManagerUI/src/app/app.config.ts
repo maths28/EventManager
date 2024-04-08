@@ -6,8 +6,8 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import 'moment/locale/fr';
-import {errorInterceptor} from "./interceptor/error.interceptor";
-import {credentialsInterceptor} from "./interceptor/credentials.interceptor";
+import {apiErrorInterceptor} from "./interceptor/api-error.interceptor";
+import {apiInterceptor} from "./interceptor/api.interceptor";
 
 
 export const appConfig: ApplicationConfig = {
@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideAnimationsAsync(),
     provideHttpClient(
-      withInterceptors([credentialsInterceptor, errorInterceptor])
+      withInterceptors([apiInterceptor, apiErrorInterceptor])
     ),
     {
       provide: MAT_DATE_LOCALE,
