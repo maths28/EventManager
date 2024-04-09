@@ -6,6 +6,9 @@
       </mat-card-header>
       <mat-card-content>
         <p>{{errorResponse.resumeErrorMessage}}</p>
+        @if (errorResponse.otherInfoAboutError){
+          <p>{{errorResponse.otherInfoAboutError}}</p>
+        }
         @if(errorResponse.detailedErrorMessages){
           <ul>
             @for (detailedError of errorResponse.detailedErrorMessages; track detailedError){

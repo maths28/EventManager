@@ -18,7 +18,13 @@ export class ErrorService {
         this.errorResponse = new ErrorResponse("Vous n'avez pas les accès à cette page !")
       } else {
         const rawErrorContent = rawErrorResponse.error;
-        this.errorResponse = new ErrorResponse(rawErrorContent.resumeErrorMessage, rawErrorContent.detailedErrorMessages)
+        if(rawErrorContent.hasOwnProperty("resumeErrorMessage")){
+          this.errorResponse = new ErrorResponse(rawErrorContent.resumeErrorMessage, rawErrorContent.detailedErrorMessages);
+        } else {
+          this.errorResponse = new ErrorResponse(
+            "Une erreur est survenue.", "Veuillez contacter l'admin"
+          );
+        }
       }
     } else {
       this.errorResponse = new ErrorResponse(rawErrorResponse);
