@@ -14,7 +14,7 @@ export class ErrorService {
 
   handleError(rawErrorResponse: HttpErrorResponse|string){
     if(rawErrorResponse instanceof HttpErrorResponse){
-      if(rawErrorResponse.status == 401){
+      if(rawErrorResponse.status == 401 || rawErrorResponse.status == 403){
         this.errorResponse = new ErrorResponse("Vous n'avez pas les accès à cette page !")
       } else {
         const rawErrorContent = rawErrorResponse.error;

@@ -15,7 +15,7 @@ export const apiErrorInterceptor: HttpInterceptorFn = (req, next) => {
       if(error.status != 401 || !['/login', '/'].includes(router.url)){
         errorService.handleError(error);
       }
-      if(error.status == 401 && router.url == '/'){
+      if((error.status == 401 || error.status == 403) && router.url == '/'){
         loginService.logout();
       }
       return throwError(() => error);

@@ -1,4 +1,4 @@
-package fr.mb.eventmanager.service.authprovider;
+package fr.mb.eventmanager.authentication;
 
 import fr.mb.eventmanager.model.User;
 import fr.mb.eventmanager.repository.UserRepository;
@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EventManagerAuthProvider implements AuthenticationProvider {
 
+
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
@@ -28,10 +29,11 @@ public class EventManagerAuthProvider implements AuthenticationProvider {
         User user = this.userRepository.findByEmail(username)
                 .orElseThrow(()->new BadCredentialsException("No user found with email " + authentication.getName()));
         if(passwordEncoder.matches(password, user.getPassword())){
-            return new UsernamePasswordAuthenticationToken(
+            return new EventManagerAuthToken(
+                    user.getId(),
                     username,
                     password,
-                    List.of(new SimpleGrantedAuthority(user.getRole()))
+                    List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
             );
         } else {
             throw new BadCredentialsException("Wrong password");

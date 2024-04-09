@@ -9,6 +9,7 @@ import fr.mb.eventmanager.service.IEventService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +50,10 @@ public class EventController {
     }
 
     @GetMapping
+    @PreAuthorize(""" 
+        (#excludeParticipantId != null && hasRole("PARTICIPANT") && #excludeParticipantId == authentication.id) ||
+        (#excludeParticipantId == null && hasRole("ORGA"))
+    """)
     public Page<EventResource> findAllFuturesEvents(
             @RequestParam(required = false) String location,
             @RequestParam(required = false) Integer excludeParticipantId,
