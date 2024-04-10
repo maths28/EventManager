@@ -4,7 +4,7 @@ import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
 import {firstValueFrom} from "rxjs";
 import {Participant} from "../model/participant";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpResponse} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -44,13 +44,17 @@ export class LoginService {
   }
 
   private async processLogin(username: string, password: string): Promise<void>{
-    const user: User|undefined = await firstValueFrom(
+    const response: HttpResponse<User>|undefined = await firstValueFrom(
       this.httpClient.get<User>(`${environment.BASE_URL}login`,{
         headers: {
           Authorization: 'Basic ' + btoa(`${username}:${password}`)
-        }
+        },
+        observe: 'response',
+        withCredentials: true
       })
     ).catch((err) => undefined);
+
+    const user: User | null | undefined = response?.body;
 
     if(user){
       if(user.role == 'ORGA'){
@@ -59,17 +63,15 @@ export class LoginService {
         this.userLogged = new Participant();
       }
       Object.assign(this.userLogged, user);
+      sessionStorage.setItem('token', response?.headers.get("Authorization") || '');
     }
   }
 
   logout() : void{
-    this.httpClient.post<null>(`${environment.BASE_URL}logout`, null)
-      .subscribe((response)=> {
-        this.userLogged = undefined;
-        sessionStorage.removeItem('user');
-        this.router.navigate( ['/login']);
-      })
-
+    this.userLogged = undefined;
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    this.router.navigate( ['/login']);
   }
 
   getUser(): User | undefined{

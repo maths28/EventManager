@@ -7,6 +7,7 @@ import fr.mb.eventmanager.dto.ErrorResponse;
 import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
 import fr.mb.eventmanager.dto.participant.ParticipantCreateRequest;
 import fr.mb.eventmanager.exception.EventManagerAppException;
+import fr.mb.eventmanager.exception.InvalidTokenException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,8 @@ public class EventManagerControllerAdvice {
     public ResponseEntity<ErrorResponse> handleAppException(EventManagerAppException exception){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setResumeErrorMessage(exception.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        HttpStatus status = exception instanceof InvalidTokenException ? HttpStatus.FORBIDDEN : HttpStatus.BAD_REQUEST;
+        return new ResponseEntity<>(errorResponse, status);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

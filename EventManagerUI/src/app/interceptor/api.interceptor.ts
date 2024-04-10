@@ -18,6 +18,12 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
     }
   }
 
+  //Envoi du token JWT
+  if(!req.url.startsWith(`${environment.BASE_URL}login`)
+    && !req.url.startsWith(`${environment.BASE_URL}user`) && sessionStorage.getItem('token')){
+    httpHeaders = httpHeaders.append("Authorization", sessionStorage.getItem('token')!);
+  }
+
   let options: any = {
     headers: httpHeaders
   }
