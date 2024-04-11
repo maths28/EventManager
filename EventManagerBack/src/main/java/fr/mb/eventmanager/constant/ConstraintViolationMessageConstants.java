@@ -12,4 +12,6 @@ public class ConstraintViolationMessageConstants {
     public static final String INTRODUCE_MANY_PARTICIPANT_CONSTRAINT_VIOLATION_MESSAGE =
             "Des erreurs ont été detectées dans le contenu du participant";
 
+    private ConstraintViolationMessageConstants(){}
+
 }

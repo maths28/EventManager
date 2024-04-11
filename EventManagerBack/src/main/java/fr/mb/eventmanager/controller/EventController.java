@@ -1,7 +1,7 @@
 package fr.mb.eventmanager.controller;
 
-import fr.mb.eventmanager.dto.event.EventResource;
 import fr.mb.eventmanager.dto.event.EventCreateOrUpdateRequest;
+import fr.mb.eventmanager.dto.event.EventResource;
 import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.EventNotFoundException;
 import fr.mb.eventmanager.exception.MaxCapacitySmallerThanTotalPartException;
@@ -11,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/events")

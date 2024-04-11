@@ -56,14 +56,12 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public void deleteEvent(int eventId) throws EventNotFoundException {
-        eventRepository.findById(eventId).map(event -> {
-            event.getParticipants().forEach(participant -> {
-                participant.removeEvent(eventId);
-                participantRepository.save(participant);
-            });
-            eventRepository.delete(event);
-            return true;
-        }).orElseThrow(()-> new EventNotFoundException(eventId));
+        Event event = eventRepository.findById(eventId).orElseThrow(()-> new EventNotFoundException(eventId));
+        event.getParticipants().forEach(participant -> {
+            participant.removeEvent(eventId);
+            participantRepository.save(participant);
+        });
+        eventRepository.delete(event);
     }
 
     @Override

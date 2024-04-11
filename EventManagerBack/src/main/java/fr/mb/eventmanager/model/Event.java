@@ -1,12 +1,10 @@
 package fr.mb.eventmanager.model;
 
-import fr.mb.eventmanager.annotation.EndDateAfterStartDate;
-import fr.mb.eventmanager.annotation.StartDateAfterNow;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.Generated;
 import org.hibernate.generator.EventType;
 
 import java.time.LocalDateTime;

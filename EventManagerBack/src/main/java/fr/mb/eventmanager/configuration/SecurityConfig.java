@@ -5,7 +5,6 @@ import fr.mb.eventmanager.filter.CsrfCookieFilter;
 import fr.mb.eventmanager.filter.JwtTokenGeneratorFilter;
 import fr.mb.eventmanager.filter.JwtTokenValidatorFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -37,7 +36,7 @@ public class SecurityConfig {
             JwtTokenValidatorFilter jwtTokenValidatorFilter
     ) throws Exception {
         return http
-            .sessionManagement((session)->
+            .sessionManagement(session->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers-> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .cors(cors -> cors.configurationSource(request -> {
@@ -50,7 +49,7 @@ public class SecurityConfig {
                     config.setMaxAge(3600L);
                     return config;
                 }))
-           .csrf((csrf)-> csrf
+           .csrf(csrf-> csrf
                    .ignoringRequestMatchers("/user")
                    .ignoringRequestMatchers(PathRequest.toH2Console())
                    .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())

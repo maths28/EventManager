@@ -1,7 +1,6 @@
 package fr.mb.eventmanager.validator;
 
 import fr.mb.eventmanager.annotation.StartDateAfterNow;
-import fr.mb.eventmanager.model.Event;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

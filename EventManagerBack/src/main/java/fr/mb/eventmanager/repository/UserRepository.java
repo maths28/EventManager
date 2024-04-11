@@ -1,6 +1,5 @@
 package fr.mb.eventmanager.repository;
 
-import fr.mb.eventmanager.model.Participant;
 import fr.mb.eventmanager.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
