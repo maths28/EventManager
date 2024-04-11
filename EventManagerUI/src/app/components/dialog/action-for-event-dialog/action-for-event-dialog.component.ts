@@ -23,8 +23,7 @@ import {ParticipantService} from "../../../service/participant.service";
     MatDialogTitle,
     MatDialogClose
   ],
-  templateUrl: './action-for-event-dialog.component.html',
-  styleUrl: './action-for-event-dialog.component.css'
+  templateUrl: './action-for-event-dialog.component.html'
 })
 export class ActionForEventDialogComponent implements OnInit{
 

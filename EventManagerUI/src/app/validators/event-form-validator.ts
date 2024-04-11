@@ -19,7 +19,7 @@ export const endDateEventFormValidator: ValidatorFn = (control: AbstractControl)
 
   let startDateControl =  control.parent?.get('startDate');
 
-  if (control.value && startDateControl && startDateControl.value) {
+  if (control.value && startDateControl?.value) {
     startDate = moment.isMoment(startDateControl.value) ? startDateControl.value : moment(startDateControl.value, environment.DATE_TIME_FORMAT);
     endDate = moment.isMoment(control.value) ? control.value : moment(control.value, environment.DATE_TIME_FORMAT);
     if(endDate.isSameOrBefore(startDate)){

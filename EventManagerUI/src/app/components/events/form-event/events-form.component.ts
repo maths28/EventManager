@@ -7,12 +7,11 @@ import {Event} from "../../../model/event"
 import {EventService} from "../../../service/event.service";
 import {Router} from "@angular/router";
 import {MatMomentDatetimeModule} from "@mat-datetimepicker/moment"
-import {MatDatetimepickerModule} from "@mat-datetimepicker/core";
+import {MatDatetimepickerModule,MAT_DATETIME_FORMATS} from "@mat-datetimepicker/core";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import moment, {Moment} from "moment";
 import {endDateEventFormValidator, startDateEventFormValidator} from "../../../validators/event-form-validator";
 import {environment} from "../../../../environments/environment";
-import {MAT_DATETIME_FORMATS} from "@mat-datetimepicker/core"
 
 @Component({
   selector: 'app-events-form',
@@ -47,8 +46,7 @@ import {MAT_DATETIME_FORMATS} from "@mat-datetimepicker/core"
       }
     }
   ],
-  templateUrl: './events-form.component.html',
-  styleUrl: './events-form.component.css'
+  templateUrl: './events-form.component.html'
 })
 export class EventsFormComponent implements OnInit {
 
@@ -88,10 +86,14 @@ export class EventsFormComponent implements OnInit {
 
       if(this.event.id){
         this.eventService.updateEvent(this.event.id, editedEvent)
-          .subscribe(()=> this.router.navigate(['/events', this.event.id]));
+          .subscribe(()=> {
+            this.router.navigate(['/events', this.event.id])
+          });
       }else {
         this.eventService.createEvent(editedEvent)
-          .subscribe((newEvent: Event)=> this.router.navigate(['/events', newEvent.id]));
+          .subscribe( (newEvent: Event) => {
+            this.router.navigate(['/events', newEvent.id]);
+          });
       }
     }
 

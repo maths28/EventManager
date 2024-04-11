@@ -20,7 +20,7 @@ export class LoginService {
 
   isLogged(): boolean {
     if(!this.userLogged && sessionStorage.getItem('user')){
-      let user: User = JSON.parse(sessionStorage.getItem('user') || '') as User;
+      let user: User = JSON.parse(sessionStorage.getItem('user') ?? '') as User;
       if(user.role == 'ORGA'){
         this.userLogged = new User();
       } else {
@@ -63,7 +63,7 @@ export class LoginService {
         this.userLogged = new Participant();
       }
       Object.assign(this.userLogged, user);
-      sessionStorage.setItem('token', response?.headers.get("Authorization") || '');
+      sessionStorage.setItem('token', response?.headers.get("Authorization") ?? '');
     }
   }
 

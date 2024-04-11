@@ -1,7 +1,6 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {LoginService} from "../service/login.service";
 import {inject} from "@angular/core";
-import {ErrorService} from "../service/error.service";
 
 export const alreadyLoggedGuard: CanActivateFn = (route, state) => {
   const loginService: LoginService = inject(LoginService);

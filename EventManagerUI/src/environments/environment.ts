@@ -1,12 +1,4 @@
 export const environment = {
-  BASE_URL: '',
-  ORGA_USER: {
-    username: '',
-    password: ''
-  },
-  PARTICIPANT_USER: {
-    username: '',
-    password: ''
-  },
-  DATE_TIME_FORMAT: ''
+  BASE_URL: 'http://localhost:8080/',
+  DATE_TIME_FORMAT: 'YYYY-MM-DD HH:mm'
 };

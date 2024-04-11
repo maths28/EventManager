@@ -34,7 +34,7 @@
 
     @if (participants$ | async; as pageParticipant){
 
-      <table mat-table [dataSource]="pageParticipant.content">
+      <table aria-label="Participants" mat-table [dataSource]="pageParticipant.content">
 
         <ng-container matColumnDef="firstName">
           <th mat-header-cell *matHeaderCellDef> Nom </th>

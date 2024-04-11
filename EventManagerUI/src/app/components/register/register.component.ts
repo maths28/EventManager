@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {MatButton} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {combineLatest, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {Participant} from "../../model/participant";
 import {AsyncPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";

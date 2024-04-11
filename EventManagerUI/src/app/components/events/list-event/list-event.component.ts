@@ -57,6 +57,7 @@ import moment from "moment";
 export class ListEventComponent implements OnInit{
 
   events$ : Observable<PageEvent>;
+  ariaLabel: string;
   private commonDisplayedColumns: string[] = ['name', 'description', 'startDate', 'endDate', 'location', 'nbParticipants'];
   displayedColumns: string[];
   pageIndex: number = 0;
@@ -94,6 +95,9 @@ export class ListEventComponent implements OnInit{
         this.location = location;
         this.loadPage();
       });
+      this.ariaLabel = "Evènements";
+    } else {
+      this.ariaLabel = "Inscriptions";
     }
     this.loadPage();
   }

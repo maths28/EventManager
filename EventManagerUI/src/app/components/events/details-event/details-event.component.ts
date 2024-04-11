@@ -99,7 +99,7 @@ export class DetailsEventComponent implements OnInit{
   deleteEvent(event: Event): void {
     let dialogData : ActionForEventDialogData =
       new ActionForEventDialogData(
-        ActionForEventType.DELETE_EVENT, event, ()=> this.router.navigateByUrl("/")
+        ActionForEventType.DELETE_EVENT, event, () => { this.router.navigateByUrl("/") }
       );
     this.dialog.open(ActionForEventDialogComponent, {
       data: dialogData

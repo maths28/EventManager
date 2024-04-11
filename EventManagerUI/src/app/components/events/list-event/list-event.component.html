@@ -30,7 +30,8 @@
 
     @if (events$ | async; as eventPage){
 
-    <table mat-table [dataSource]="eventPage.content">
+    <table mat-table [attr.aria-label]="ariaLabel"
+           [dataSource]="eventPage.content">
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nom </th>

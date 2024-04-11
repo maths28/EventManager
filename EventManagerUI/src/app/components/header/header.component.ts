@@ -1,9 +1,8 @@
-import {Component, effect, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatButton} from "@angular/material/button";
 import {EventType, Router, RouterLink, RouterOutlet} from "@angular/router";
 import {LoginService} from "../../service/login.service";
-import {routes} from "../../app.routes";
 
 @Component({
   selector: 'app-header',
