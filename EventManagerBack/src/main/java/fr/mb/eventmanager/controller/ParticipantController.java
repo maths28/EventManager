@@ -40,7 +40,7 @@ public class ParticipantController {
     @DeleteMapping("/{participantId}/events/{eventId}")
     public List<EventResource> unregisterParticipantToEvent(@PathVariable int participantId,
                                                           @PathVariable int eventId
-    ) throws UserNotRegisteredForEventException, ParticipantNotFoundException {
+    ) throws UserNotRegisteredForEventException, ParticipantNotFoundException, EventAlreadyStartedOrDoneException {
         return this.participantService.unregisterParticipantToEvent(participantId, eventId);
     }
 }

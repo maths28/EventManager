@@ -4,6 +4,7 @@ import fr.mb.eventmanager.authorization.ParticipantAuthorizationManager;
 import fr.mb.eventmanager.filter.CsrfCookieFilter;
 import fr.mb.eventmanager.filter.JwtTokenGeneratorFilter;
 import fr.mb.eventmanager.filter.JwtTokenValidatorFilter;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +39,7 @@ public class SecurityConfig {
         return http
             .sessionManagement((session)->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers-> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
@@ -49,6 +52,7 @@ public class SecurityConfig {
                 }))
            .csrf((csrf)-> csrf
                    .ignoringRequestMatchers("/user")
+                   .ignoringRequestMatchers(PathRequest.toH2Console())
                    .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
            )
@@ -61,6 +65,7 @@ public class SecurityConfig {
                    .requestMatchers("/participants/{id}/**").access(new ParticipantAuthorizationManager())
                    .requestMatchers(HttpMethod.GET, "/events").authenticated()
                    .requestMatchers("/events/**").hasRole("ORGA")
+                   .requestMatchers(PathRequest.toH2Console()).permitAll()
                    .anyRequest().authenticated()
            )
            .httpBasic(Customizer.withDefaults())

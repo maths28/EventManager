@@ -88,7 +88,7 @@
                 <mat-icon>add_circle</mat-icon>
               </button>
             }
-          } @else {
+          } @else if(showDesinscription(event)){
             <button mat-icon-button (click)="unregisterToEvent(event)">
               <mat-icon>remove_circle</mat-icon>
             </button>
@@ -102,7 +102,7 @@
     } @else {
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Chargemenr des données en cours</mat-card-title>
+          <mat-card-title>Chargement des données en cours</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-spinner></mat-spinner>

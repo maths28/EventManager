@@ -15,7 +15,7 @@ public interface IParticipantService {
 
     public List<EventResource> unregisterParticipantToEvent(int participantId,
                                                             int eventId
-    ) throws ParticipantNotFoundException, UserNotRegisteredForEventException;
+    ) throws ParticipantNotFoundException, UserNotRegisteredForEventException, EventAlreadyStartedOrDoneException;
 
     public Page<EventResource> findAllEventsForParticipant(int participantId, int pageSize, int pageNumber) throws ParticipantNotFoundException;
 

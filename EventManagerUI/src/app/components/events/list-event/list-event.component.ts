@@ -24,6 +24,7 @@ import {ActionForEventDialogComponent} from "../../dialog/action-for-event-dialo
 import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from "@angular/material/expansion";
 import {MatIcon} from "@angular/material/icon";
 import {MatToolbar} from "@angular/material/toolbar";
+import moment from "moment";
 
 @Component({
   selector: 'app-list',
@@ -146,6 +147,10 @@ export class ListEventComponent implements OnInit{
     this.dialog.open(ActionForEventDialogComponent, {
       data: dialogData
     });
+  }
+
+  showDesinscription(event: Event): boolean{
+    return moment(event.startDate).isAfter(moment());
   }
 
   protected readonly EventListType = EventListType;

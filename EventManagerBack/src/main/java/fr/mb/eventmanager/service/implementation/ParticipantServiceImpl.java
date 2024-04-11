@@ -1,11 +1,8 @@
 package fr.mb.eventmanager.service.implementation;
 
 import fr.mb.eventmanager.dto.event.EventResource;
-import fr.mb.eventmanager.dto.participant.ParticipantCreateRequest;
-import fr.mb.eventmanager.dto.participant.ParticipantResource;
 import fr.mb.eventmanager.exception.*;
 import fr.mb.eventmanager.mapper.EventMapper;
-import fr.mb.eventmanager.mapper.ParticipantMapper;
 import fr.mb.eventmanager.model.Event;
 import fr.mb.eventmanager.model.Participant;
 import fr.mb.eventmanager.repository.EventRepository;
@@ -16,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParticipantServiceImpl implements IParticipantService {
@@ -46,9 +44,20 @@ public class ParticipantServiceImpl implements IParticipantService {
     }
 
     @Override
-    public List<EventResource> unregisterParticipantToEvent(int participantId, int eventId) throws ParticipantNotFoundException, UserNotRegisteredForEventException {
+    public List<EventResource> unregisterParticipantToEvent(int participantId, int eventId)
+            throws ParticipantNotFoundException,
+            UserNotRegisteredForEventException,
+            EventAlreadyStartedOrDoneException{
         Participant participant = participantRepository.findById(participantId).orElseThrow(()-> new ParticipantNotFoundException(participantId));
-        if(!participant.removeEvent(eventId)) throw new UserNotRegisteredForEventException(eventId);
+        if(!participant.removeEvent(eventId)){
+            Optional<Event> event = participant.getEvents().stream()
+                    .filter((eventOfPart -> eventOfPart.getId() == eventId)).findAny();
+            if(event.isEmpty()){
+                throw new UserNotRegisteredForEventException(participantId);
+            } else {
+                throw new EventAlreadyStartedOrDoneException(eventId);
+            }
+        }
         return participantRepository.save(participant).getEvents().stream()
                 .map(eventMapper::toEventResource).toList();
     }

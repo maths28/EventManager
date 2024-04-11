@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,10 @@ public class Participant extends User {
     }
 
     public boolean removeEvent(int eventId){
-        return this.events.removeIf(event -> event.getId() == eventId);
+        return this.events.removeIf(event ->
+                event.getId() == eventId &&
+                        event.getStartDate().isAfter(LocalDateTime.now())
+        );
     }
 
 }
