@@ -9,6 +9,7 @@ import fr.mb.eventmanager.model.User;
 import fr.mb.eventmanager.repository.UserRepository;
 import fr.mb.eventmanager.service.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResource findParticipantByEmail(String email) {
+    public UserResource findUserByEmail(String email) {
         return this.userRepository.findByEmail(email).map(userMapper::toUserResource)
                 .orElse(null);
+    }
+
+    @Override
+    public Boolean existUserByEmail(String email) {
+        return this.userRepository.existsByEmail(email);
     }
 }
 

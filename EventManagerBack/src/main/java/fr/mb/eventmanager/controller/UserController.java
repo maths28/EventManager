@@ -18,18 +18,18 @@ public class UserController {
 
     @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResource createParticipant(@RequestBody @Valid UserCreateRequest userCreateRequest)
+    public UserResource createUser(@RequestBody @Valid UserCreateRequest userCreateRequest)
             throws UserEmailAlreadyExistsException {
         return userService.createUser(userCreateRequest);
     }
 
     @GetMapping("/user/search")
-    public UserResource findUserByEmail(@RequestParam String email){
-        return this.userService.findParticipantByEmail(email);
+    public Boolean existUserByEmail(@RequestParam String email){
+        return this.userService.existUserByEmail(email);
     }
 
     @GetMapping("/login")
     public UserResource login(Authentication authentication){
-        return userService.findParticipantByEmail(authentication.getName());
+        return userService.findUserByEmail(authentication.getName());
     }
 }

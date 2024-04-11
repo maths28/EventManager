@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
-import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {Observable} from "rxjs";
+import {combineLatest, Observable} from "rxjs";
 import {Participant} from "../../model/participant";
 import {AsyncPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
@@ -13,16 +13,15 @@ import {EmailErrorStateMatcher} from "./emailErrorStateMatcher";
 import {MatSelect} from "@angular/material/select";
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
     MatButton,
-    MatError,
-    MatFormField,
+    MatFormFieldModule,
     MatInput,
-    MatLabel,
     ReactiveFormsModule,
     AsyncPipe,
     RouterLink,
@@ -31,7 +30,8 @@ import {UserService} from "../../service/user.service";
     MatCardHeader,
     MatCardTitle,
     MatSelect,
-    MatOption
+    MatOption,
+    MatIcon
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'

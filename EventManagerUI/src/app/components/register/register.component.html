@@ -31,6 +31,20 @@
       <mat-form-field>
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" [errorStateMatcher]="matcher"/>
+        <mat-icon matSuffix>
+          @if(!form.get('email')?.pristine && form.get('email'); as email){
+            @if(email.pending){
+              hourglass_empty
+            }
+            @else if (email.invalid && email.errors?.uniqueEmail){
+              cancel
+            }
+            @else if(email.valid) {
+              check
+            }
+          }
+        </mat-icon>
+
         @if (form.get('email')?.errors?.uniqueEmail){
           <mat-error>Ce mail est déjà utilisé</mat-error>
         }
@@ -54,7 +68,7 @@
       </mat-form-field>
     }
 
-    <button mat-button type="submit" [disabled]="form.disabled || form.invalid">S'enregistrer</button>
+    <button mat-button type="submit" [disabled]="form.disabled || form.invalid || form.pending">S'enregistrer</button>
   </form>
 }
 
